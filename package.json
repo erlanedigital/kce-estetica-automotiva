@@ -1,0 +1,11 @@
+{
+  "name": "kce-estetica-automotiva",
+  "version": "1.0.0",
+  "description": "KCE Estética Automotiva - Lava-jato Premium Montes Claros",
+  "scripts": {
+    "build": "node -e \"const fs=require('fs'); if(!fs.existsSync('dist')) fs.mkdirSync('dist'); ['index.html','styles.css','script.js','favicon.svg','_headers','_redirects'].forEach(f => { if(fs.existsSync(f)) fs.copyFileSync(f, 'dist/' + f); }); if(fs.existsSync('assets')) { if(!fs.existsSync('dist/assets')) fs.mkdirSync('dist/assets'); fs.readdirSync('assets').forEach(f => fs.copyFileSync('assets/' + f, 'dist/assets/' + f)); } console.log('Build synchronized to dist/');\""
+  },
+  "keywords": ["estetica-automotiva", "lava-jato", "montes-claros", "kce"],
+  "author": "KCE",
+  "license": "ISC"
+}
