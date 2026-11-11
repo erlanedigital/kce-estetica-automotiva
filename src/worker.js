@@ -2,7 +2,7 @@
  * Cloudflare Worker — KCE Estética Automotiva
  * Subdomínio Oficial: kce.emia.workers.dev
  * Lava-jato Premium em Montes Claros - MG
- * SPA, Assets, Segurança Bancária HSTS e API REST de Agendamentos
+ * Servindo Aplicação Original Completa com Ações e Roteamento SPA
  */
 
 const SECURITY_HEADERS = {
@@ -23,7 +23,17 @@ const CORS_HEADERS = {
   "Access-Control-Max-Age": "86400"
 };
 
-let inMemoryBookings = [];
+// In-memory collections store fallback
+const collections = {
+  kce_bookings: [],
+  kce_services: [],
+  kce_clients: [],
+  kce_stock: [],
+  kce_finance: [],
+  kce_gp_scores: [],
+  kce_partners: [],
+  kce_settings: []
+};
 
 function addSecurityHeaders(response) {
   const newHeaders = new Headers(response.headers);
@@ -49,71 +59,69 @@ export default {
       });
     }
 
-    // 1. Health check
+    // 1. Backend Actions API Handler
+    if (url.pathname === "/actions" || url.pathname === "actions") {
+      try {
+        const body = await request.json();
+        const action = body.action;
+        const args = body.args || {};
+        const col = args.collection || "default";
+
+        if (!collections[col]) {
+          collections[col] = [];
+        }
+
+        let result = {};
+
+        if (action === "records.list") {
+          result = { records: collections[col] };
+        } else if (action === "records.create") {
+          const id = args.idempotency_key || ("rec_" + Date.now() + "_" + Math.random().toString(36).substr(2, 6));
+          const newRec = { id, value: args.value };
+          collections[col].push(newRec);
+          result = { record: newRec };
+        } else if (action === "records.replace") {
+          const idx = collections[col].findIndex(r => r.id === args.id);
+          const updated = { id: args.id, value: args.value };
+          if (idx !== -1) {
+            collections[col][idx] = updated;
+          } else {
+            collections[col].push(updated);
+          }
+          result = { record: updated };
+        } else if (action === "records.delete") {
+          collections[col] = collections[col].filter(r => r.id !== args.id);
+          result = { success: true };
+        } else if (action === "records.get") {
+          const found = collections[col].find(r => r.id === args.id);
+          result = { record: found || null };
+        }
+
+        return new Response(JSON.stringify({ data: result }), {
+          status: 200,
+          headers: { "Content-Type": "application/json", ...CORS_HEADERS, ...SECURITY_HEADERS }
+        });
+      } catch (err) {
+        return new Response(JSON.stringify({ error: err.message }), {
+          status: 500,
+          headers: { "Content-Type": "application/json", ...CORS_HEADERS, ...SECURITY_HEADERS }
+        });
+      }
+    }
+
+    // 2. Health check
     if (url.pathname === "/api/health") {
       return new Response(JSON.stringify({
         status: "online",
         project: "kce-estetica-automotiva",
         domain: "kce.emia.workers.dev",
         establishment: "KCE Estética Automotiva",
-        location: "Próximo à Praça de Esportes • Montes Claros - MG",
-        security: "bank-grade",
+        location: "Montes Claros - MG",
+        original: true,
         timestamp: new Date().toISOString()
       }, null, 2), {
         headers: { "Content-Type": "application/json", ...CORS_HEADERS, ...SECURITY_HEADERS }
       });
-    }
-
-    // 2. API /api/bookings (Listar e Ingerir Agendamentos)
-    if (url.pathname === "/api/bookings") {
-      if (request.method === "GET") {
-        return new Response(JSON.stringify({
-          success: true,
-          total: inMemoryBookings.length,
-          bookings: inMemoryBookings,
-          timestamp: new Date().toISOString()
-        }), {
-          headers: { "Content-Type": "application/json", ...CORS_HEADERS, ...SECURITY_HEADERS }
-        });
-      }
-
-      if (request.method === "POST") {
-        try {
-          const body = await request.json();
-          const newBooking = {
-            id: "KCE-" + Date.now().toString().slice(-4),
-            name: body.name || "Cliente KCE",
-            phone: body.phone || "",
-            service: body.service || "Higienização Completa",
-            carType: body.carType || "SUV",
-            vehicle: body.vehicle || "Veículo não especificado",
-            plate: body.plate || "A confirmar",
-            date: body.date || new Date().toISOString().split("T")[0],
-            time: body.time || "13:30",
-            price: body.price || 129,
-            status: "Pendente Aprovação",
-            coupon: body.coupon || "",
-            createdAt: new Date().toISOString()
-          };
-
-          inMemoryBookings.unshift(newBooking);
-          if (inMemoryBookings.length > 500) inMemoryBookings.pop();
-
-          return new Response(JSON.stringify({
-            success: true,
-            message: "Autoagendamento recebido com sucesso no Worker KCE!",
-            booking: newBooking
-          }), {
-            status: 201,
-            headers: { "Content-Type": "application/json", ...CORS_HEADERS, ...SECURITY_HEADERS }
-          });
-        } catch (e) {
-          return new Response(JSON.stringify({ error: "JSON inválido", details: e.message }), {
-            status: 400,
-            headers: { "Content-Type": "application/json", ...CORS_HEADERS, ...SECURITY_HEADERS }
-          });
-        }
-      }
     }
 
     // Servir assets estáticos compilados em dist/ (SPA)
