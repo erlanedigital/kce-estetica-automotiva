@@ -1,5 +1,5 @@
 // KCL Estética Automotiva - Service Worker PWA (Auto-Updating)
-const CACHE_NAME = 'kcl-cache-v3-' + Date.now();
+const CACHE_NAME = 'kcl-cache-v-1794501693496';
 
 self.addEventListener('install', (event) => {
   // Força o Service Worker a ativar imediatamente sem esperar fechar abas
