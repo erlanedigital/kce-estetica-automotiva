@@ -281,6 +281,63 @@ header nav {
     white-space: nowrap !important;
   }
 
+
+  /* CARD DO PRIMEIRO SÓCIO SELECIONADO / ATIVO */
+  .admin-shell .partner-shortcut:first-child {
+    background: #0066FF !important;
+    border-color: #0052CC !important;
+    color: #FFFFFF !important;
+    box-shadow: 0 10px 25px -5px rgba(0, 102, 255, 0.4) !important;
+  }
+  .admin-shell .partner-shortcut:first-child .partner-shortcut-avatar {
+    background: rgba(255, 255, 255, 0.2) !important;
+    color: #FFFFFF !important;
+    border-color: rgba(255, 255, 255, 0.4) !important;
+  }
+  .admin-shell .partner-shortcut:first-child .partner-shortcut-name {
+    color: #FFFFFF !important;
+  }
+  .admin-shell .partner-shortcut:first-child .partner-shortcut-role {
+    color: rgba(255, 255, 255, 0.85) !important;
+  }
+  .admin-shell .partner-shortcut:first-child .partner-shortcut-badge {
+    background: #FFFFFF !important;
+    color: #0066FF !important;
+    border: none !important;
+  }
+  .admin-shell .partner-shortcut:first-child .partner-shortcut-link {
+    color: #FFFFFF !important;
+  }
+
+  /* MODAL DE DETALHES DO KANBAN */
+  .kanban-card {
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+  }
+  .kanban-card:hover {
+    border-color: #0066FF !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 8px 20px -4px rgba(0, 102, 255, 0.15) !important;
+  }
+
+  /* FILTROS DE CONTAS A PAGAR E A RECEBER */
+  .filter-pill {
+    padding: 4px 12px;
+    border-radius: 9999px;
+    font-size: 11px;
+    font-weight: 700;
+    transition: all 0.2s ease;
+    cursor: pointer;
+  }
+  .filter-pill.active {
+    background: #0066FF;
+    color: #FFFFFF;
+  }
+  .filter-pill:not(.active) {
+    background: #F1F5F9;
+    color: #64748B;
+  }
+
 </style><script data-metaai-safe-area-runtime>// (c) Meta Platforms, Inc. and affiliates. Confidential and proprietary.
 
 (() => {
@@ -5546,7 +5603,7 @@ Error generating stack: `+v.message+`
   l("div",{className:"rounded-[22px] bg-gradient-to-r from-[#0066FF] to-[#0047B3] p-6 text-white shadow-xl flex flex-wrap items-center justify-between gap-4",children:[
     l("div",{children:[
       r("span",{className:"pill bg-white/20 text-white text-[11px] font-bold px-3 py-1 uppercase tracking-wider",children:"⚡ SISTEMA DE GESTÃO DE VENDAS & SERVIÇOS"}),
-      r("h2",{className:"text-2xl sm:text-3xl font-extrabold mt-2 leading-tight",children:"Painel Executivo de Vendas KCL"}),
+      r("h2",{className:"text-2xl sm:text-3xl font-extrabold mt-2 leading-tight",children:"Painel Executivo de Serviços KCL"}),
       r("p",{className:"text-white/80 text-sm mt-1 max-w-xl",children:"Acompanhamento em tempo real de faturamento, ticket médio, conversão e desempenho dos serviços em Montes Claros."})
     ]}),
     l("div",{className:"flex flex-wrap gap-2.5",children:[
@@ -5676,5 +5733,100 @@ Error generating stack: `+v.message+`
 </script>
   <script>(function(){function m(a){var h=a.getAttribute("href");if(!h)return;try{var u=new URL(h,document.baseURI);if(((u.protocol==="http:"||u.protocol==="https:")&&u.host!==location.host)||u.protocol==="mailto:"||u.protocol==="tel:"||u.protocol==="sms:"){a.target="_blank";a.rel="noopener noreferrer";}}catch(e){}}function s(){document.querySelectorAll("a[href]").forEach(m);}if(document.readyState!=="loading"){s();}else{document.addEventListener("DOMContentLoaded",s);}document.addEventListener("click",function(e){var a=e.target&&e.target.closest&&e.target.closest("a[href]");if(a){m(a);}},true);})();</script>
   <script type="application/json" data-clippy-inline-media-manifest="1">{"version":1,"slots":[]}</script>
+
+<script>
+// AUTO-LIMPEZA DO 0 INICIAL EM INPUTS NUMÉRICOS
+document.addEventListener('focusin', function(e) {
+  if (e.target && e.target.type === 'number') {
+    if (e.target.value === '0' || e.target.value === '0.00') {
+      e.target.value = '';
+    }
+  }
+});
+
+// ABRIR LISTA COMPLETA AO CLICAR NOS CARDS DE CAIXA DO DIA
+document.addEventListener('click', function(e) {
+  const card = e.target.closest('.admin-shell [class*="admin-kpi"], .admin-shell [class*="card"]');
+  if (card && (card.textContent.includes('CAIXA DO DIA') || card.textContent.includes('SALDO DO DIA') || card.textContent.includes('FORMAS DE PAGAMENTO'))) {
+    // Rolar até a tabela financeira ou abrir modal
+    const finTable = document.querySelector('table');
+    if (finTable) {
+      finTable.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }
+});
+
+// FILTROS DE CONTAS A PAGAR E A RECEBER
+function filterContas(tipo) {
+  const rows = document.querySelectorAll('table tr');
+  rows.forEach(function(row) {
+    const text = row.textContent;
+    if (row.parentElement && row.parentElement.tagName === 'THEAD') return;
+    if (tipo === 'todos') {
+      row.style.display = '';
+    } else if (tipo === 'pagar') {
+      row.style.display = text.includes('A Pagar') ? '' : 'none';
+    } else if (tipo === 'receber') {
+      row.style.display = text.includes('A Receber') ? '' : 'none';
+    } else if (tipo === 'pagos') {
+      row.style.display = (text.includes('Pago') || text.includes('Recebido')) && !text.includes('A Pagar') && !text.includes('A Receber') ? '' : 'none';
+    }
+  });
+}
+
+// ATUALIZAÇÃO DA SEÇÃO DE CONTAS COM OS BOTÕES DE FILTRO
+function setupContasFilters() {
+  const heading = Array.from(document.querySelectorAll('h2')).find(function(h) {
+    return h.textContent.includes('Contas a Pagar e a Receber');
+  });
+  if (heading && !document.getElementById('contas-filter-bar')) {
+    const bar = document.createElement('div');
+    bar.id = 'contas-filter-bar';
+    bar.className = 'flex flex-wrap gap-1.5 my-3';
+    bar.innerHTML = '<button onclick="filterContas(\'todos\')" class="filter-pill active">Todos</button>' +
+                    '<button onclick="filterContas(\'pagar\')" class="filter-pill">A Pagar</button>' +
+                    '<button onclick="filterContas(\'receber\')" class="filter-pill">A Receber</button>' +
+                    '<button onclick="filterContas(\'pagos\')" class="filter-pill">Pagos / Recebidos</button>';
+    heading.parentElement.appendChild(bar);
+    bar.querySelectorAll('button').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        bar.querySelectorAll('button').forEach(function(b) { b.classList.remove('active'); });
+        btn.classList.add('active');
+      });
+    });
+  }
+}
+
+// INJETAR O PAINEL DE ESCALA E RODÍZIO DOS 3 SÓCIOS
+function setupSociosShift() {
+  const sociosSection = document.querySelector('section[aria-label="Sócios — Minhas Tarefas"]');
+  if (sociosSection && !document.getElementById('socios-shift-container')) {
+    const shiftBox = document.createElement('div');
+    shiftBox.id = 'socios-shift-container';
+    shiftBox.className = 'mb-4 p-4 rounded-2xl bg-white border border-slate-200 shadow-sm';
+    shiftBox.innerHTML = '<div class="flex items-center justify-between mb-3">' +
+      '<div><h3 class="font-extrabold text-slate-900 text-sm sm:text-base">Escala & Rodízio dos 3 Sócios (2 por Turno)</h3>' +
+      '<p class="text-xs text-slate-500">Cadu, Kayan e Luis • 33,33% cada • Sempre 2 sócios presentes na operação</p></div>' +
+      '<span class="text-xs font-bold text-blue-700 bg-blue-50 border border-blue-200 px-2.5 py-1 rounded-full">Rodízio Ativo</span>' +
+      '</div>' +
+      '<div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 text-xs">' +
+      '<div class="bg-slate-50 p-2.5 rounded-xl border border-slate-200"><span class="font-bold text-slate-700 block mb-1">Segunda</span><span class="text-[11px] text-blue-600 font-extrabold block">Manhã: Cadu + Kayan</span><span class="text-[11px] text-indigo-600 font-extrabold block">Tarde: Kayan + Luis</span></div>' +
+      '<div class="bg-slate-50 p-2.5 rounded-xl border border-slate-200"><span class="font-bold text-slate-700 block mb-1">Terça</span><span class="text-[11px] text-blue-600 font-extrabold block">Manhã: Luis + Cadu</span><span class="text-[11px] text-indigo-600 font-extrabold block">Tarde: Cadu + Kayan</span></div>' +
+      '<div class="bg-slate-50 p-2.5 rounded-xl border border-slate-200"><span class="font-bold text-slate-700 block mb-1">Quarta</span><span class="text-[11px] text-blue-600 font-extrabold block">Manhã: Kayan + Luis</span><span class="text-[11px] text-indigo-600 font-extrabold block">Tarde: Luis + Cadu</span></div>' +
+      '<div class="bg-slate-50 p-2.5 rounded-xl border border-slate-200"><span class="font-bold text-slate-700 block mb-1">Quinta</span><span class="text-[11px] text-blue-600 font-extrabold block">Manhã: Cadu + Kayan</span><span class="text-[11px] text-indigo-600 font-extrabold block">Tarde: Kayan + Luis</span></div>' +
+      '<div class="bg-slate-50 p-2.5 rounded-xl border border-slate-200"><span class="font-bold text-slate-700 block mb-1">Sexta</span><span class="text-[11px] text-blue-600 font-extrabold block">Manhã: Luis + Cadu</span><span class="text-[11px] text-indigo-600 font-extrabold block">Tarde: Cadu + Kayan</span></div>' +
+      '<div class="bg-slate-50 p-2.5 rounded-xl border border-slate-200"><span class="font-bold text-slate-700 block mb-1">Sábado</span><span class="text-[11px] text-blue-600 font-extrabold block">Manhã: Kayan + Luis</span><span class="text-[11px] text-indigo-600 font-extrabold block">Tarde: Cadu + Luis</span></div>' +
+      '</div>';
+    sociosSection.parentElement.insertBefore(shiftBox, sociosSection);
+  }
+}
+
+// INICIAR TUDO AO CARREGAR OU AO TROCAR DE ABA
+setInterval(function() {
+  setupContasFilters();
+  setupSociosShift();
+}, 800);
+</script>
+
 </body>
 </html>
