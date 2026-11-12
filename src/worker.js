@@ -1,6 +1,6 @@
 /**
- * Cloudflare Worker — KCE Estética Automotiva
- * Subdomínio Oficial: kce.emia.workers.dev
+ * Cloudflare Worker — KCL Estética Automotiva
+ * Subdomínio Oficial: kcl.emia.workers.dev
  * Lava-jato Premium em Montes Claros - MG
  * Servindo Aplicação Original Completa com Ações e Roteamento SPA
  */
@@ -113,9 +113,9 @@ export default {
     if (url.pathname === "/api/health") {
       return new Response(JSON.stringify({
         status: "online",
-        project: "kce-estetica-automotiva",
-        domain: "kce.emia.workers.dev",
-        establishment: "KCE Estética Automotiva",
+        project: "kcl-estetica-automotiva",
+        domain: "kcl.emia.workers.dev",
+        establishment: "KCL Estética Automotiva",
         location: "Montes Claros - MG",
         original: true,
         timestamp: new Date().toISOString()
@@ -134,7 +134,7 @@ export default {
       }
     }
 
-    return new Response("KCE Estética Automotiva — Worker Ativo", {
+    return new Response("KCL Estética Automotiva — Worker Ativo", {
       headers: { "Content-Type": "text/plain; charset=utf-8", ...SECURITY_HEADERS }
     });
   }
