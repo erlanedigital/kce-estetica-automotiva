@@ -1,0 +1,32 @@
+{
+  "name": "KCL Estética Automotiva",
+  "short_name": "KCL Estética",
+  "description": "Estúdio de Estética Automotiva em Montes Claros - MG. Vitrificação, Polimento, Higienização e Lavagem Detalhada.",
+  "start_url": "/",
+  "id": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#050B1A",
+  "theme_color": "#0066FF",
+  "lang": "pt-BR",
+  "categories": [
+    "lifestyle",
+    "business",
+    "utilities"
+  ],
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-512.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

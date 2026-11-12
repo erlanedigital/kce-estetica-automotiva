@@ -2,7 +2,7 @@
  * Cloudflare Worker — KCL Estética Automotiva
  * Subdomínio Oficial: kcl.emia.workers.dev
  * Lava-jato Premium em Montes Claros - MG
- * Servindo Aplicação Original Completa com Ações e Roteamento SPA
+ * Servindo Aplicação Original Completa, PWA, Ações e Roteamento SPA
  */
 
 const SECURITY_HEADERS = {
@@ -117,17 +117,37 @@ export default {
         domain: "kcl.emia.workers.dev",
         establishment: "KCL Estética Automotiva",
         location: "Montes Claros - MG",
-        original: true,
+        pwa: true,
+        lgpd: true,
         timestamp: new Date().toISOString()
       }, null, 2), {
         headers: { "Content-Type": "application/json", ...CORS_HEADERS, ...SECURITY_HEADERS }
       });
     }
 
-    // Servir assets estáticos compilados em dist/ (SPA)
+    // 3. Servir assets estáticos compilados em dist/ (SPA + PWA)
     if (env.ASSETS) {
       try {
         const assetResponse = await env.ASSETS.fetch(request);
+        
+        // Headers customizados para PWA
+        if (url.pathname === "/manifest.json" || url.pathname === "/manifest.webmanifest") {
+          const pwaHeaders = new Headers(assetResponse.headers);
+          pwaHeaders.set("Content-Type", "application/manifest+json; charset=utf-8");
+          pwaHeaders.set("Cache-Control", "public, max-age=3600");
+          for (const [k, v] of Object.entries(SECURITY_HEADERS)) pwaHeaders.set(k, v);
+          return new Response(assetResponse.body, { status: assetResponse.status, headers: pwaHeaders });
+        }
+
+        if (url.pathname === "/sw.js") {
+          const swHeaders = new Headers(assetResponse.headers);
+          swHeaders.set("Content-Type", "application/javascript; charset=utf-8");
+          swHeaders.set("Service-Worker-Allowed", "/");
+          swHeaders.set("Cache-Control", "no-cache");
+          for (const [k, v] of Object.entries(SECURITY_HEADERS)) swHeaders.set(k, v);
+          return new Response(assetResponse.body, { status: assetResponse.status, headers: swHeaders });
+        }
+
         return addSecurityHeaders(assetResponse);
       } catch (e) {
         return new Response("Asset not found", { status: 404, headers: SECURITY_HEADERS });

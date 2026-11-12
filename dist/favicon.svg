@@ -1,17 +1,21 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
   <defs>
-    <linearGradient id="kceGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#0066FF"/>
-      <stop offset="50%" stop-color="#00D2FF"/>
-      <stop offset="100%" stop-color="#050B1A"/>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#050B1A"/>
+      <stop offset="100%" stop-color="#0A1633"/>
     </linearGradient>
-    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
-      <feGaussianBlur stdDeviation="3" result="blur"/>
-      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
-    </filter>
+    <linearGradient id="glow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0066FF"/>
+      <stop offset="100%" stop-color="#2F9BFF"/>
+    </linearGradient>
   </defs>
-  <rect width="64" height="64" rx="16" fill="#050B1A"/>
-  <rect x="2" y="2" width="60" height="60" rx="14" fill="none" stroke="#00D2FF" stroke-width="1.5" stroke-opacity="0.4"/>
-  <path d="M16 16 L22 16 L32 30 L42 16 L48 16 L35 34 L49 48 L43 48 L32 36 L21 48 L15 48 L29 32 Z" fill="url(#kceGrad)" filter="url(#glow)"/>
-  <circle cx="50" cy="18" r="4" fill="#00D2FF"/>
+  <rect width="512" height="512" rx="108" fill="url(#bg)"/>
+  <rect x="24" y="24" width="464" height="464" rx="92" fill="none" stroke="url(#glow)" stroke-width="8" stroke-opacity="0.4"/>
+  <!-- Logo KCL -->
+  <g transform="translate(256, 230)" text-anchor="middle">
+    <text font-family="'Plus Jakarta Sans', system-ui, -apple-system, sans-serif" font-weight="900" font-size="160" fill="#FFFFFF" letter-spacing="-4">KCL</text>
+    <text y="70" font-family="'Plus Jakarta Sans', system-ui, -apple-system, sans-serif" font-weight="700" font-size="34" fill="#2F9BFF" letter-spacing="8">ESTÉTICA</text>
+    <text y="105" font-family="'Plus Jakarta Sans', system-ui, -apple-system, sans-serif" font-weight="600" font-size="22" fill="#93A3BC" letter-spacing="4">AUTOMOTIVA</text>
+  </g>
+  <circle cx="256" cy="410" r="14" fill="#0066FF"/>
 </svg>

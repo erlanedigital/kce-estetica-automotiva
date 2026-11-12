@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#050B1A"/>
+      <stop offset="100%" stop-color="#0A1633"/>
+    </linearGradient>
+    <linearGradient id="glow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0066FF"/>
+      <stop offset="100%" stop-color="#2F9BFF"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="108" fill="url(#bg)"/>
+  <rect x="24" y="24" width="464" height="464" rx="92" fill="none" stroke="url(#glow)" stroke-width="8" stroke-opacity="0.4"/>
+  <!-- Logo KCL -->
+  <g transform="translate(256, 230)" text-anchor="middle">
+    <text font-family="'Plus Jakarta Sans', system-ui, -apple-system, sans-serif" font-weight="900" font-size="160" fill="#FFFFFF" letter-spacing="-4">KCL</text>
+    <text y="70" font-family="'Plus Jakarta Sans', system-ui, -apple-system, sans-serif" font-weight="700" font-size="34" fill="#2F9BFF" letter-spacing="8">ESTÉTICA</text>
+    <text y="105" font-family="'Plus Jakarta Sans', system-ui, -apple-system, sans-serif" font-weight="600" font-size="22" fill="#93A3BC" letter-spacing="4">AUTOMOTIVA</text>
+  </g>
+  <circle cx="256" cy="410" r="14" fill="#0066FF"/>
+</svg>
