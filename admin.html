@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>KCL Gestão Automotiva • Painel Administrativo Aureon</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #F8FAFC; color: #0F172A; }
+    .card-stat { transition: transform 0.2s ease, box-shadow 0.2s ease; }
+    .card-stat:hover { transform: translateY(-2px); box-shadow: 0 12px 24px -10px rgba(0,0,0,0.1); }
+    .custom-scroll::-webkit-scrollbar { width: 6px; height: 6px; }
+    .custom-scroll::-webkit-scrollbar-track { background: #F1F5F9; border-radius: 4px; }
+    .custom-scroll::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 4px; }
+    .custom-scroll::-webkit-scrollbar-thumb:hover { background: #94A3B8; }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col bg-[#F8FAFC] text-slate-800 antialiased selection:bg-blue-500 selection:text-white">
+
+  <!-- AUTH SCREEN (IF NOT LOGGED) -->
+  <div id="authScreen" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/90 backdrop-blur-md p-4 transition-all duration-300">
+    <div class="w-full max-w-md bg-white rounded-3xl p-8 shadow-2xl border border-slate-100 relative">
+      <div class="text-center mb-8">
+        <div class="w-16 h-16 bg-gradient-to-tr from-blue-600 to-cyan-500 rounded-2xl mx-auto flex items-center justify-center text-white text-2xl font-black shadow-lg shadow-blue-500/30 mb-3">
+          KCL
+        </div>
+        <h1 class="text-2xl font-black tracking-tight text-slate-900">Acesso Restrito KCL</h1>
+        <p class="text-sm text-slate-500 mt-1 font-medium">Gestão & Inteligência Operacional</p>
+      </div>
+
+      <form id="loginForm" class="space-y-4">
+        <div>
+          <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">E-mail Operacional</label>
+          <input type="email" id="loginEmail" required value="admin@kcl.com" class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none text-sm transition">
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">Senha de Acesso</label>
+          <input type="password" id="loginPassword" required value="kcl1234" class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none text-sm transition">
+        </div>
+
+        <div id="loginError" class="hidden text-xs font-bold text-red-600 bg-red-50 p-3 rounded-xl border border-red-100"></div>
+
+        <button type="submit" class="w-full py-3.5 px-4 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white rounded-xl font-bold text-sm shadow-lg shadow-blue-500/25 transition active:scale-[0.98]">
+          Entrar no Sistema
+        </button>
+      </form>
+      
+      <div class="text-center mt-6">
+        <a href="/" class="text-xs font-bold text-slate-400 hover:text-slate-600 transition">← Voltar ao site público</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN ADMIN APP -->
+  <div id="adminApp" class="flex-1 flex flex-col min-h-screen">
+    
+    <!-- TOP NAVBAR -->
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-40">
+      <div class="max-w-[1600px] w-full mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
+        
+        <!-- BRAND & SYSTEM -->
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-600 flex items-center justify-center text-white font-black text-sm shadow-md shadow-blue-500/20">
+            KCL
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="font-extrabold text-base tracking-tight text-slate-900">KCL Gestão</span>
+              <span class="px-2 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-blue-50 text-blue-600 border border-blue-200">Aureon OS</span>
+            </div>
+            <p class="text-[11px] text-slate-400 font-medium">Estética Automotiva • Montes Claros</p>
+          </div>
+        </div>
+
+        <!-- NAVIGATION TABS -->
+        <nav class="hidden md:flex items-center gap-1 bg-slate-100/80 p-1 rounded-2xl border border-slate-200/60">
+          <button onclick="setTab('visao')" id="tabBtn-visao" class="tab-btn px-4 py-2 rounded-xl text-xs font-bold transition bg-white text-blue-600 shadow-sm">
+            📊 Visão Geral
+          </button>
+          <button onclick="setTab('agendamentos')" id="tabBtn-agendamentos" class="tab-btn px-4 py-2 rounded-xl text-xs font-bold transition text-slate-600 hover:text-slate-900">
+            📅 Agendamentos
+          </button>
+          <button onclick="setTab('servicos')" id="tabBtn-servicos" class="tab-btn px-4 py-2 rounded-xl text-xs font-bold transition text-slate-600 hover:text-slate-900">
+            ✨ Serviços & Preços
+          </button>
+          <button onclick="setTab('financeiro')" id="tabBtn-financeiro" class="tab-btn px-4 py-2 rounded-xl text-xs font-bold transition text-slate-600 hover:text-slate-900">
+            💰 Lançamentos
+          </button>
+        </nav>
+
+        <!-- ACTIONS & USER -->
+        <div class="flex items-center gap-3">
+          <a href="/" target="_blank" class="hidden sm:inline-flex items-center gap-1.5 text-xs font-bold text-slate-600 hover:text-blue-600 bg-slate-50 hover:bg-blue-50/50 border border-slate-200 px-3 py-1.5 rounded-xl transition">
+            🌐 Ver Site
+          </a>
+          <button onclick="logout()" class="px-3 py-1.5 text-xs font-bold text-red-600 hover:bg-red-50 rounded-xl transition">
+            Sair
+          </button>
+        </div>
+      </div>
+
+      <!-- MOBILE SUB-NAV -->
+      <div class="md:hidden flex items-center overflow-x-auto px-4 py-2 gap-2 border-t border-slate-100 custom-scroll bg-slate-50/50">
+        <button onclick="setTab('visao')" class="tab-btn-m px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap bg-blue-600 text-white">Visão Geral</button>
+        <button onclick="setTab('agendamentos')" class="tab-btn-m px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap bg-white text-slate-600 border border-slate-200">Agendamentos</button>
+        <button onclick="setTab('servicos')" class="tab-btn-m px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap bg-white text-slate-600 border border-slate-200">Serviços</button>
+        <button onclick="setTab('financeiro')" class="tab-btn-m px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap bg-white text-slate-600 border border-slate-200">Financeiro</button>
+      </div>
+    </header>
+
+    <!-- CONTENT WRAPPER -->
+    <main class="flex-1 max-w-[1600px] w-full mx-auto p-4 sm:p-6 lg:p-8 space-y-6">
+
+      <!-- ================= TAB: VISÃO GERAL (AUREON SISTEMAS DESIGN) ================= -->
+      <section id="tab-visao" class="tab-content space-y-6">
+        
+        <!-- BARRA DE PERÍODO & INDICADOR TEMPO REAL -->
+        <div class="flex flex-wrap items-center justify-between gap-4 bg-white p-4 sm:p-5 rounded-2xl border border-slate-200 shadow-sm">
+          <div class="flex flex-wrap items-center gap-3">
+            <span class="text-xs font-black uppercase tracking-wider text-slate-500">Definir Período:</span>
+            <div class="flex items-center gap-2 bg-slate-50 border border-slate-200 px-3 py-1.5 rounded-xl text-xs font-bold text-slate-700">
+              <span>De:</span>
+              <input type="date" id="dateStart" class="bg-transparent outline-none cursor-pointer">
+            </div>
+            <div class="flex items-center gap-2 bg-slate-50 border border-slate-200 px-3 py-1.5 rounded-xl text-xs font-bold text-slate-700">
+              <span>Até:</span>
+              <input type="date" id="dateEnd" class="bg-transparent outline-none cursor-pointer">
+            </div>
+            <button onclick="applyDateFilter()" class="px-3.5 py-1.5 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs font-bold transition shadow-sm">
+              Filtrar
+            </button>
+          </div>
+
+          <div class="flex items-center gap-2 text-xs font-bold text-emerald-600 bg-emerald-50 border border-emerald-200/60 px-3 py-1.5 rounded-xl">
+            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+            Dados atualizados em tempo real
+          </div>
+        </div>
+
+        <!-- 4 BIG NUMBERS COLORIDOS (AUREON SISTEMAS STYLE) -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+          
+          <!-- ROXO: CUSTOS -->
+          <div class="card-stat p-6 rounded-2xl bg-gradient-to-br from-purple-700 to-indigo-800 text-white shadow-lg shadow-purple-900/10 border border-purple-600/30 relative overflow-hidden">
+            <div class="flex justify-between items-start">
+              <div>
+                <p class="text-xs font-black uppercase tracking-wider text-purple-200">Custos Operacionais</p>
+                <h3 id="statCustos" class="text-2xl sm:text-3xl font-extrabold mt-2 tracking-tight">R$ 1.250,00</h3>
+                <p class="text-[11px] text-purple-200/80 mt-1 font-semibold">Produtos & Insumos</p>
+              </div>
+              <div class="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center text-xl">📦</div>
+            </div>
+          </div>
+
+          <!-- VERDE: LUCRO BRUTO -->
+          <div class="card-stat p-6 rounded-2xl bg-gradient-to-br from-emerald-600 to-teal-700 text-white shadow-lg shadow-emerald-900/10 border border-emerald-500/30 relative overflow-hidden">
+            <div class="flex justify-between items-start">
+              <div>
+                <p class="text-xs font-black uppercase tracking-wider text-emerald-100">Lucro Bruto</p>
+                <h3 id="statLucroBruto" class="text-2xl sm:text-3xl font-extrabold mt-2 tracking-tight">R$ 5.920,00</h3>
+                <p class="text-[11px] text-emerald-100/80 mt-1 font-semibold">Margem de 68%</p>
+              </div>
+              <div class="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center text-xl">📈</div>
+            </div>
+          </div>
+
+          <!-- VERMELHO: DESPESAS -->
+          <div class="card-stat p-6 rounded-2xl bg-gradient-to-br from-rose-600 to-red-700 text-white shadow-lg shadow-rose-900/10 border border-rose-500/30 relative overflow-hidden">
+            <div class="flex justify-between items-start">
+              <div>
+                <p class="text-xs font-black uppercase tracking-wider text-rose-100">Despesas Fixas</p>
+                <h3 id="statDespesas" class="text-2xl sm:text-3xl font-extrabold mt-2 tracking-tight">R$ 1.500,00</h3>
+                <p class="text-[11px] text-rose-100/80 mt-1 font-semibold">Aluguel, Luz & Água</p>
+              </div>
+              <div class="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center text-xl">📉</div>
+            </div>
+          </div>
+
+          <!-- AZUL: FATURAMENTO -->
+          <div class="card-stat p-6 rounded-2xl bg-gradient-to-br from-blue-600 to-cyan-600 text-white shadow-lg shadow-blue-900/10 border border-blue-500/30 relative overflow-hidden">
+            <div class="flex justify-between items-start">
+              <div>
+                <p class="text-xs font-black uppercase tracking-wider text-blue-100">Faturamento Bruto</p>
+                <h3 id="statFaturamento" class="text-2xl sm:text-3xl font-extrabold mt-2 tracking-tight">R$ 8.670,00</h3>
+                <p class="text-[11px] text-blue-100/80 mt-1 font-semibold">42 Veículos Atendidos</p>
+              </div>
+              <div class="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center text-xl">💰</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- GRÁFICO MISTO COM PILLS DE ALTERNÂNCIA (AUREON SISTEMAS) -->
+        <div class="bg-white p-5 sm:p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+          <div class="flex flex-wrap items-center justify-between gap-4">
+            <div>
+              <h2 class="text-base font-extrabold text-slate-900">Evolução Financeira & Veículos</h2>
+              <p class="text-xs text-slate-400 font-medium">Demonstrativo comparativo no período selecionado</p>
+            </div>
+
+            <!-- PILLS DE ALTERNÂNCIA -->
+            <div class="flex flex-wrap items-center gap-1.5 bg-slate-100 p-1 rounded-xl border border-slate-200">
+              <button onclick="setMetricFilter('faturamento')" class="metric-pill px-3 py-1 rounded-lg text-xs font-bold transition bg-white text-blue-600 shadow-sm">Faturamento</button>
+              <button onclick="setMetricFilter('custos')" class="metric-pill px-3 py-1 rounded-lg text-xs font-bold transition text-slate-600 hover:text-slate-900">Custos</button>
+              <button onclick="setMetricFilter('despesas')" class="metric-pill px-3 py-1 rounded-lg text-xs font-bold transition text-slate-600 hover:text-slate-900">Despesas</button>
+              <button onclick="setMetricFilter('lucro')" class="metric-pill px-3 py-1 rounded-lg text-xs font-bold transition text-slate-600 hover:text-slate-900">Lucro Bruto</button>
+            </div>
+          </div>
+
+          <!-- CANVAS DO GRÁFICO -->
+          <div class="h-72 w-full">
+            <canvas id="aureonChart"></canvas>
+          </div>
+        </div>
+
+        <!-- SEÇÃO DE VENDAS (ALTERNÂNCIA CARDS VS TABELA) -->
+        <div class="bg-white p-5 sm:p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+          <div class="flex flex-wrap items-center justify-between gap-4">
+            <div>
+              <h2 class="text-base font-extrabold text-slate-900">Registro de Vendas Recentes</h2>
+              <p class="text-xs text-slate-400 font-medium">Veículos finalizados e entregues</p>
+            </div>
+
+            <!-- ALTERNÂNCIA: CARDS VS TABELA -->
+            <div class="flex items-center gap-1 bg-slate-100 p-1 rounded-xl border border-slate-200">
+              <button onclick="setViewMode('cards')" id="btnViewCards" class="px-3 py-1 rounded-lg text-xs font-bold transition bg-white text-slate-900 shadow-sm">
+                🗂️ Cards
+              </button>
+              <button onclick="setViewMode('table')" id="btnViewTable" class="px-3 py-1 rounded-lg text-xs font-bold transition text-slate-600 hover:text-slate-900">
+                📋 Tabela
+              </button>
+            </div>
+          </div>
+
+          <!-- MODO CARDS -->
+          <div id="vendasCardsView" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <!-- Cards injetados via JS -->
+          </div>
+
+          <!-- MODO TABELA -->
+          <div id="vendasTableView" class="hidden overflow-x-auto custom-scroll border border-slate-200 rounded-xl">
+            <table class="w-full text-left text-xs">
+              <thead class="bg-slate-50 border-b border-slate-200 text-slate-500 font-extrabold uppercase tracking-wider">
+                <tr>
+                  <th class="p-3.5">Data / Hora</th>
+                  <th class="p-3.5">Cliente</th>
+                  <th class="p-3.5">Veículo / Placa</th>
+                  <th class="p-3.5">Serviço</th>
+                  <th class="p-3.5">Valor</th>
+                  <th class="p-3.5">Status</th>
+                  <th class="p-3.5 text-right">Ação</th>
+                </tr>
+              </thead>
+              <tbody id="vendasTableBody" class="divide-y divide-slate-100 font-medium">
+                <!-- Linhas injetadas via JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= TAB: AGENDAMENTOS ================= -->
+      <section id="tab-agendamentos" class="tab-content hidden space-y-6">
+        <div class="flex flex-wrap items-center justify-between gap-4">
+          <div>
+            <h2 class="text-xl font-extrabold text-slate-900">Agenda de Serviços KCL</h2>
+            <p class="text-xs text-slate-400 font-medium">Gerenciamento completo da fila de carros e horários</p>
+          </div>
+          <button onclick="openNewBookingModal()" class="px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold text-xs shadow-md shadow-blue-500/20 transition flex items-center gap-1.5">
+            <span>+</span> Novo Agendamento
+          </button>
+        </div>
+
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+          <div class="overflow-x-auto custom-scroll">
+            <table class="w-full text-left text-xs">
+              <thead class="bg-slate-50 border-b border-slate-200 text-slate-500 font-extrabold uppercase tracking-wider">
+                <tr>
+                  <th class="p-3.5">Data / Horário</th>
+                  <th class="p-3.5">Cliente</th>
+                  <th class="p-3.5">Veículo</th>
+                  <th class="p-3.5">Serviço Solicitado</th>
+                  <th class="p-3.5">Valor</th>
+                  <th class="p-3.5">Status</th>
+                  <th class="p-3.5 text-right">Confirmar WhatsApp</th>
+                </tr>
+              </thead>
+              <tbody id="bookingsTableBody" class="divide-y divide-slate-100 font-medium">
+                <!-- Injetado via JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= TAB: SERVIÇOS & PREÇOS ================= -->
+      <section id="tab-servicos" class="tab-content hidden space-y-6">
+        <div class="flex flex-wrap items-center justify-between gap-4">
+          <div>
+            <h2 class="text-xl font-extrabold text-slate-900">Catálogo de Serviços Oficiais</h2>
+            <p class="text-xs text-slate-400 font-medium">Tabela de preços e tempo estimado de execução</p>
+          </div>
+          <button onclick="openNewServiceModal()" class="px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold text-xs shadow-md shadow-blue-500/20 transition">
+            + Cadastrar Serviço
+          </button>
+        </div>
+
+        <div id="servicesGrid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <!-- Injetado via JS -->
+        </div>
+      </section>
+
+      <!-- ================= TAB: FINANCEIRO ================= -->
+      <section id="tab-financeiro" class="tab-content hidden space-y-6">
+        <div class="flex flex-wrap items-center justify-between gap-4">
+          <div>
+            <h2 class="text-xl font-extrabold text-slate-900">Fluxo de Caixa & Lançamentos</h2>
+            <p class="text-xs text-slate-400 font-medium">Entradas de serviços e saídas operacionais</p>
+          </div>
+          <button onclick="openNewTransactionModal()" class="px-4 py-2.5 bg-slate-900 hover:bg-slate-800 text-white rounded-xl font-bold text-xs transition">
+            + Novo Lançamento
+          </button>
+        </div>
+
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+          <div class="overflow-x-auto custom-scroll">
+            <table class="w-full text-left text-xs">
+              <thead class="bg-slate-50 border-b border-slate-200 text-slate-500 font-extrabold uppercase tracking-wider">
+                <tr>
+                  <th class="p-3.5">Data</th>
+                  <th class="p-3.5">Tipo</th>
+                  <th class="p-3.5">Descrição</th>
+                  <th class="p-3.5">Categoria</th>
+                  <th class="p-3.5 text-right">Valor</th>
+                </tr>
+              </thead>
+              <tbody id="transactionsTableBody" class="divide-y divide-slate-100 font-medium">
+                <!-- Injetado via JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="border-t border-slate-200 bg-white py-4 text-center text-xs text-slate-400">
+      KCL Estética Automotiva • Montes Claros - MG • Sistema Aureon OS 2026
+    </footer>
+  </div>
+
+  <script src="/admin.js"></script>
+</body>
+</html>
