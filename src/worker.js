@@ -35,9 +35,12 @@ const collections = {
   kce_settings: []
 };
 
-function addSecurityHeaders(response) {
+function addSecurityHeaders(response, customHeaders = {}) {
   const newHeaders = new Headers(response.headers);
   for (const [key, value] of Object.entries(SECURITY_HEADERS)) {
+    newHeaders.set(key, value);
+  }
+  for (const [key, value] of Object.entries(customHeaders)) {
     newHeaders.set(key, value);
   }
   return new Response(response.body, {
@@ -119,6 +122,7 @@ export default {
         location: "Montes Claros - MG",
         pwa: true,
         lgpd: true,
+        version: "2026.11.12-instant-v3",
         timestamp: new Date().toISOString()
       }, null, 2), {
         headers: { "Content-Type": "application/json", ...CORS_HEADERS, ...SECURITY_HEADERS }
@@ -130,22 +134,30 @@ export default {
       try {
         const assetResponse = await env.ASSETS.fetch(request);
         
-        // Headers customizados para PWA
-        if (url.pathname === "/manifest.json" || url.pathname === "/manifest.webmanifest") {
-          const pwaHeaders = new Headers(assetResponse.headers);
-          pwaHeaders.set("Content-Type", "application/manifest+json; charset=utf-8");
-          pwaHeaders.set("Cache-Control", "public, max-age=3600");
-          for (const [k, v] of Object.entries(SECURITY_HEADERS)) pwaHeaders.set(k, v);
-          return new Response(assetResponse.body, { status: assetResponse.status, headers: pwaHeaders });
+        // Headers para HTML (Index) — NUNCA GUARDAR EM CACHE PARA GARANTIR ATUALIZAÇÃO IMEDIATA EM TODOS OS DISPOSITIVOS
+        if (url.pathname === "/" || url.pathname === "/index.html" || url.pathname.endsWith(".html")) {
+          return addSecurityHeaders(assetResponse, {
+            "Cache-Control": "no-cache, no-store, must-revalidate",
+            "Pragma": "no-cache",
+            "Expires": "0"
+          });
         }
 
+        // Headers customizados para PWA Manifest
+        if (url.pathname === "/manifest.json" || url.pathname === "/manifest.webmanifest") {
+          return addSecurityHeaders(assetResponse, {
+            "Content-Type": "application/manifest+json; charset=utf-8",
+            "Cache-Control": "no-cache, no-store, must-revalidate"
+          });
+        }
+
+        // Headers para o Service Worker (NUNCA DEVE SER CACHEADO)
         if (url.pathname === "/sw.js") {
-          const swHeaders = new Headers(assetResponse.headers);
-          swHeaders.set("Content-Type", "application/javascript; charset=utf-8");
-          swHeaders.set("Service-Worker-Allowed", "/");
-          swHeaders.set("Cache-Control", "no-cache");
-          for (const [k, v] of Object.entries(SECURITY_HEADERS)) swHeaders.set(k, v);
-          return new Response(assetResponse.body, { status: assetResponse.status, headers: swHeaders });
+          return addSecurityHeaders(assetResponse, {
+            "Content-Type": "application/javascript; charset=utf-8",
+            "Service-Worker-Allowed": "/",
+            "Cache-Control": "no-cache, no-store, must-revalidate, max-age=0"
+          });
         }
 
         return addSecurityHeaders(assetResponse);
