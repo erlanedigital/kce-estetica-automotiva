@@ -5398,34 +5398,7 @@ main section button,main section a{
     font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif !important;
   }
 
-  /* BOTÃO FLUTUANTE DISCRETO DE ACESSO AO ADMIN PARA NUNCA SUMIR */
-  #kcl-admin-float-btn {
-    position: fixed;
-    bottom: 18px;
-    left: 18px;
-    z-index: 9999;
-    width: 36px;
-    height: 36px;
-    border-radius: 9999px;
-    background: rgba(15, 23, 42, 0.45);
-    backdrop-filter: blur(8px);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    color: #94a3b8;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 14px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    text-decoration: none;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.25);
-  }
-  #kcl-admin-float-btn:hover {
-    background: #0066FF;
-    color: #ffffff;
-    transform: scale(1.08);
-    box-shadow: 0 6px 16px rgba(0,102,255,0.4);
-  }
+  
 
   /* SUB-BARRA DE NAVEGAÇÃO MOBILE PERFEITAMENTE ABAIXO DA LOGO */
   @media (max-width: 768px) {
@@ -5535,35 +5508,7 @@ main section button,main section a{
 </style>
 
 
-<style id="kcl-final-polish">
-  /* ANIMAÇÃO DAS LETRAS SUBINDO (REVEAL UP) */
-  @keyframes letterUp {
-    0% { opacity: 0; transform: translateY(24px); }
-    100% { opacity: 1; transform: translateY(0); }
-  }
-  h1, h2, .font-display {
-    animation: letterUp 0.75s cubic-bezier(0.16, 1, 0.3, 1) both;
-  }
-  /* SCROLL SUAVE NOS SERVIÇOS */
-  #servicos .grid, #servicos [class*="grid"] {
-    scroll-behavior: smooth !important;
-    -webkit-overflow-scrolling: touch !important;
-  }
-  @media (max-width: 768px) {
-    #servicos .grid {
-      display: flex !important;
-      overflow-x: auto !important;
-      scroll-snap-type: x mandatory !important;
-      gap: 16px !important;
-      padding-bottom: 20px !important;
-    }
-    #servicos .grid > * {
-      flex: 0 0 85% !important;
-      scroll-snap-align: center !important;
-      min-width: 280px !important;
-    }
-  }
-</style>
+
 
 </head>
 <body>
