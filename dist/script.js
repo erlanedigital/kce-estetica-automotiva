@@ -73,7 +73,7 @@ const initialStock = [
 ];
 
 const initialPartners = [
-  { name: 'Luís (Operação & Pátio)', prolabore: 2500, share: 33.33 },
+  { name: 'Luiz (Operação & Pátio)', prolabore: 2500, share: 33.33 },
   { name: 'Sócio 2 (Comercial & Clientes)', prolabore: 2500, share: 33.33 },
   { name: 'Sócio 3 (Financeiro & Insumos)', prolabore: 2500, share: 33.34 }
 ];
