@@ -1,5 +1,5 @@
 // KCL Estética Automotiva - Service Worker PWA (Auto-Updating)
-const CACHE_NAME = 'kcl-cache-v1794502920019';
+const CACHE_NAME = 'kcl-pwa-v67';
 
 self.addEventListener('install', (event) => {
   // Força o Service Worker a ativar imediatamente sem esperar fechar abas
@@ -7,11 +7,15 @@ self.addEventListener('install', (event) => {
 });
 
 self.addEventListener('activate', (event) => {
-  // Limpa imediatamente caches antigos
+  // Limpa imediatamente todos os caches antigos
   event.waitUntil(
     caches.keys().then((keys) => {
       return Promise.all(
-        keys.map((key) => caches.delete(key))
+        keys.map((key) => {
+          if (key !== CACHE_NAME) {
+            return caches.delete(key);
+          }
+        })
       );
     }).then(() => self.clients.claim())
   );
@@ -23,9 +27,9 @@ self.addEventListener('fetch', (event) => {
   if (!url.protocol.startsWith('http')) return;
 
   // NETWORK-FIRST ABSOLUTO PARA O HTML (GARANTE VERSÃO MAIS RECENTE SEMPRE)
-  if (event.request.mode === 'navigate' || url.pathname === '/' || url.pathname === '/index.html') {
+  if (event.request.mode === 'navigate' || url.pathname === '/' || url.pathname === '/index.html' || url.pathname.endsWith('.html')) {
     event.respondWith(
-      fetch(event.request)
+      fetch(event.request, { cache: 'no-store' })
         .then((networkResponse) => {
           return networkResponse;
         })
