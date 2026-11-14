@@ -6688,6 +6688,65 @@ html, body, #root {
       gap: 3.5rem !important;
     }
   }
+
+  /* =========================================================
+     💎 BOTÃO FLUTUANTE DE AGENDAR SERVIÇO (100% IDÊNTICO À FOTO)
+     ========================================================= */
+  #kcl-floating-cta {
+    position: fixed !important;
+    bottom: 16px !important;
+    right: 16px !important;
+    z-index: 9999 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    pointer-events: auto !important;
+  }
+  @media (min-width: 641px) {
+    #kcl-floating-cta {
+      bottom: 24px !important;
+      right: 24px !important;
+    }
+  }
+
+  #kcl-floating-cta a,
+  .kcl-floating-cta-btn {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center !important;
+    background: #0066FF !important;
+    color: #FFFFFF !important;
+    border-radius: 9999px !important;
+    border: none !important;
+    outline: none !important;
+    min-height: 48px !important;
+    height: 48px !important;
+    padding: 0 1.6rem !important;
+    font-size: 14.5px !important;
+    font-weight: 800 !important;
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.04em !important;
+    white-space: nowrap !important;
+    box-shadow: 0 8px 24px -4px rgba(0, 102, 255, 0.45) !important;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    text-decoration: none !important;
+  }
+
+  #kcl-floating-cta a:hover,
+  .kcl-floating-cta-btn:hover {
+    background: #0052CC !important;
+    transform: translateY(-2px) scale(1.02) !important;
+    box-shadow: 0 12px 28px -4px rgba(0, 102, 255, 0.6) !important;
+    color: #FFFFFF !important;
+  }
+
+  #kcl-floating-cta a:active,
+  .kcl-floating-cta-btn:active {
+    transform: translateY(0) scale(0.98) !important;
+  }
+
 </style>
 
 </head>
@@ -8544,15 +8603,10 @@ function setupSociosShift() {
 </script>
 
 
-  <!-- BOTÃO FLUTUANTE FIXO DE AGENDAR SERVIÇO -->
-  <div id="kcl-floating-cta" class="fixed bottom-4 sm:bottom-6 right-4 sm:right-6 z-[95] flex items-center gap-2">
-    <a href="#agendar" class="group flex items-center gap-2.5 rounded-full bg-gradient-to-r from-[#0066FF] to-[#0052CC] text-white font-extrabold text-sm sm:text-base px-5 sm:px-7 py-3.5 sm:py-4 shadow-[0_10px_25px_rgba(0,102,255,0.45)] border-2 border-white/25 hover:border-white/50 backdrop-blur-md transition-all duration-300 hover:scale-105 active:scale-95 kcl-desktop-floating-cta">
-      <span class="flex h-3 w-3 relative kcl-cta-mobile-pulse">
-        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-        <span class="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
-      </span>
-      <span class="kcl-cta-mobile-text lg:hidden">📅 Agendar Serviço</span>
-      <span class="kcl-cta-desktop-text hidden lg:inline">Agendar Serviço</span>
+  <!-- BOTÃO FLUTUANTE FIXO DE AGENDAR SERVIÇO (IDÊNTICO AO PADRÃO DA FOTO) -->
+  <div id="kcl-floating-cta">
+    <a href="#agendar" class="kcl-floating-cta-btn">
+      AGENDAR SERVIÇO
     </a>
   </div>
 
