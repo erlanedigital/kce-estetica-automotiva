@@ -5,7 +5,7 @@
 <script>
   // ATUALIZAÇÃO FORÇADA DE CACHE & SERVICE WORKER
   (function(){
-    var CURRENT_BUILD = 'kcl-build-20261117-v690-layout-spacing-perfection';
+    var CURRENT_BUILD = 'kcl-build-20261117-v750-all-requests-satisfied';
     try {
       // Purge any persistent "Equipe KCL" mock entries
       ['kce_rec_kce_partners', 'kce_rec_kce_partner_tasks', 'kce_rec_kce_clients'].forEach(function(k){
@@ -1089,13 +1089,7 @@ main#top #servicos > div.reveal > p:last-child {
 }
 
 /* 3. Aumento suave do título do ranking ("Quem lidera o KCL GP?") */
-main#top #corrida div.card-round h3,
-main#top #corrida div.card-round:has(h3) h3 {
-  font-size: clamp(2.3rem, 5.8vw, 3.45rem) !important;
-  line-height: 1.15 !important;
-  letter-spacing: -0.02em !important;
-  font-weight: 800 !important;
-}
+/* replaced */
 
 /* 4. Espaçamento do texto em inputs de busca com ícone (zero sobreposição) */
 .admin-shell input[placeholder*="Buscar"],
@@ -6972,12 +6966,7 @@ main#top #corrida h2.kcl-section-h2 {
 }
 
 /* RANKING: Quem lidera o KCL GP? (Aumentado suavemente conforme solicitado!) */
-main#top #corrida div.card-round h3 {
-  font-size: clamp(2.2rem, 5.5vw, 3.25rem) !important;
-  line-height: 1.15 !important;
-  letter-spacing: -0.02em !important;
-  font-weight: 800 !important;
-}
+/* replaced */
 
 /* AGENDAMENTO: Reserve seu horário (Aumentado suavemente conforme pedido!) */
 main#top #agendar h2,
@@ -7084,10 +7073,10 @@ main#top #corrida .corrida-desc-text {
 }
 
 /* Centralização do Ranking ("Quem lidera o KCL GP?") */
-main#top #corrida div.card-round:has(h3) {
+main#top #corrida div.card-round:has(#kcl-ranking-leader-title) {
   text-align: center !important;
 }
-main#top #corrida div.card-round:has(h3) > div:first-child {
+main#top #corrida div.card-round:has(#kcl-ranking-leader-title) > div:first-child {
   display: flex !important;
   flex-direction: column !important;
   align-items: center !important;
@@ -7095,8 +7084,8 @@ main#top #corrida div.card-round:has(h3) > div:first-child {
   text-align: center !important;
   width: 100% !important;
 }
-main#top #corrida div.card-round:has(h3) h3,
-main#top #corrida div.card-round:has(h3) p {
+main#top #corrida div.card-round:has(#kcl-ranking-leader-title) h3,
+main#top #corrida div.card-round:has(#kcl-ranking-leader-title) p {
   text-align: center !important;
   margin-left: auto !important;
   margin-right: auto !important;
@@ -7292,10 +7281,10 @@ main#top #corrida .corrida-desc-text { margin-top: 0.5rem !important; margin-bot
 }
 
 /* ===== Ranking dos melhores: linhas com mais respiro ===== */
-main#top #corrida div.card-round:has(h3) > div:first-child { gap: 1rem !important; }
-main#top #corrida div.card-round:has(h3) p { line-height: 1.8 !important; }
-main#top #corrida div.card-round:has(h3) h3 { line-height: 1.3 !important; margin-top: 0.9rem !important; margin-bottom: 0.35rem !important; }
-main#top #corrida div.card-round:has(h3) > p { margin-top: 1.5rem !important; }
+main#top #corrida div.card-round:has(#kcl-ranking-leader-title) > div:first-child { gap: 1rem !important; }
+main#top #corrida div.card-round:has(#kcl-ranking-leader-title) p { line-height: 1.8 !important; }
+/* replaced */
+main#top #corrida div.card-round:has(#kcl-ranking-leader-title) > p { margin-top: 1.5rem !important; }
 
 /* ===== Reserve seu horário: título maior, formulário com mais espaço e rótulos mais à direita ===== */
 main#top #agendar h2, main#top #agendar h2.kcl-section-h2 { font-size: clamp(3rem, 8.4vw, 3.4rem) !important; line-height: 1.14 !important; }
@@ -7666,6 +7655,222 @@ main#top #corrida .corrida-desc-text + * { margin-top: 1.5rem !important; }
     padding: 0 !important;
   }
 }
+
+/* ==========================================================================
+   ALTURA PERFEITA E IGUAL DOS CARDS DE LOCALIZAÇÃO (SEM CORTAR BOTÕES)
+   ========================================================================== */
+#localizacao-main-grid {
+  display: grid !important;
+  grid-template-columns: 1fr !important;
+  align-items: stretch !important;
+  gap: 2rem !important;
+}
+@media (min-width: 1024px) {
+  #localizacao-main-grid {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 2.5rem !important;
+  }
+}
+#localizacao-main-grid > div:first-child {
+  height: 100% !important;
+  min-height: 520px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: space-between !important;
+  overflow: visible !important;
+}
+#localizacao-main-grid > div:last-child {
+  height: 100% !important;
+  min-height: 520px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  overflow: hidden !important;
+  border-radius: 24px !important;
+}
+#localizacao-main-grid > div:last-child iframe {
+  width: 100% !important;
+  height: 100% !important;
+  flex: 1 1 auto !important;
+  display: block !important;
+}
+
+
+/* ==========================================================================
+   CORREÇÃO DEFINITIVA DOS TÍTULOS DO JOGO E CARDS LATERAIS
+   ========================================================================== */
+
+/* APENAS o título do Ranking é aumentado suavemente */
+.kcl-gp-ranking-headline,
+#kcl-ranking-leader-title {
+  font-size: clamp(2rem, 5.2vw, 3rem) !important;
+  line-height: 1.15 !important;
+  letter-spacing: -0.02em !important;
+  font-weight: 800 !important;
+}
+
+/* TODOS os outros títulos de cards do jogo ("Como pontuar", "Melhores voltas salvas", "Prêmios")
+   permanecem em seus tamanhos padrão normais e compactos */
+#corrida aside h3,
+#corrida .card-round h3:not(.kcl-gp-ranking-headline):not(#kcl-ranking-leader-title) {
+  font-size: 18px !important;
+  line-height: 1.35 !important;
+  font-weight: 700 !important;
+  letter-spacing: normal !important;
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+}
+#corrida aside div:has(> ul) h3,
+#corrida aside .shadow-lg h3 {
+  font-size: 16px !important;
+  line-height: 1.35 !important;
+  font-weight: 700 !important;
+}
+#corrida aside div:has(> ul) h3 svg,
+#corrida aside .shadow-lg h3 svg {
+  width: 17px !important;
+  height: 17px !important;
+}
+
+/* ==========================================================================
+   CARDS DE LOCALIZAÇÃO PERFEITOS (MESMA ALTURA, SEM CORTAR BOTÕES)
+   ========================================================================== */
+#localizacao-main-grid {
+  display: grid !important;
+  grid-template-columns: 1fr !important;
+  align-items: stretch !important;
+  gap: 2rem !important;
+}
+@media (min-width: 1024px) {
+  #localizacao-main-grid {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 2.5rem !important;
+  }
+}
+#localizacao-main-grid > div:first-child {
+  height: 100% !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: space-between !important;
+  overflow: visible !important;
+}
+#localizacao-main-grid > div:last-child {
+  height: 100% !important;
+  display: flex !important;
+  flex-direction: column !important;
+  overflow: hidden !important;
+  border-radius: 24px !important;
+}
+#localizacao-main-grid > div:last-child iframe {
+  width: 100% !important;
+  height: 100% !important;
+  flex: 1 1 auto !important;
+  display: block !important;
+}
+
+
+/* ==========================================================================
+   CSS MASTER: LABELS ALINHADAS, SUBNAV EQUALIZADO, CARDS DO JOGO RESTAURADOS
+   ========================================================================== */
+
+/* 1. ETIQUETAS (LABELS) MAIS PARA A DIREITA, EM CIMA DA CAIXA */
+.admin-shell form label,
+.admin-shell label {
+  padding-left: 14px !important;
+  margin-bottom: 4px !important;
+  display: block !important;
+  text-align: left !important;
+}
+
+/* 2. SUBNAV: MESMA ALTURA E ESTILO LIMPO EM "SÓCIOS E PRÓ-LABORE" E "MAIS DA GESTÃO" */
+.admin-shell select.kcl-subnav-select,
+.admin-shell label:has(> select) select,
+.admin-shell label select {
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  border: none !important;
+  background-color: transparent !important;
+  box-shadow: none !important;
+  padding: 0 4px !important;
+  border-radius: 0 !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  color: #0F172A !important;
+}
+
+/* 3. ABA SÓCIO: CABEÇALHO ALINHADO À ESQUERDA */
+.admin-shell form div:has(> p):has(> h3) {
+  text-align: left !important;
+  align-items: flex-start !important;
+}
+
+/* 4. JOGO: APENAS O TÍTULO DO RANKING É AUMENTADO SUAVEMENTE */
+.kcl-gp-ranking-headline,
+#kcl-ranking-leader-title {
+  font-size: clamp(2rem, 5.2vw, 3rem) !important;
+  line-height: 1.15 !important;
+  letter-spacing: -0.02em !important;
+  font-weight: 800 !important;
+}
+
+/* 5. JOGO: CARDS LATERAIS ("COMO PONTUAR", "VOLTAS SALVAS", "PRÊMIOS")
+   RESTAURADOS AOS TAMANHOS COMPACTOS E NORMAIS ORIGINAIS */
+#corrida aside .card-round,
+#corrida aside div.card-round {
+  padding: 1.25rem !important;
+}
+#corrida aside h3,
+#corrida aside .card-round h3,
+#corrida .card-round:not(:has(#kcl-ranking-leader-title)) h3 {
+  font-size: 18px !important;
+  line-height: 1.35 !important;
+  font-weight: 700 !important;
+  letter-spacing: normal !important;
+  margin-top: 0 !important;
+  margin-bottom: 0.5rem !important;
+}
+#corrida aside .shadow-lg h3 {
+  font-size: 16px !important;
+}
+#corrida aside ul,
+#corrida aside ol {
+  font-size: 14px !important;
+}
+
+/* 6. LOCALIZAÇÃO: MESMA ALTURA, SEM CORTAR BOTÕES */
+#localizacao-main-grid {
+  display: grid !important;
+  grid-template-columns: 1fr !important;
+  align-items: stretch !important;
+  gap: 2rem !important;
+}
+@media (min-width: 1024px) {
+  #localizacao-main-grid {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 2.5rem !important;
+  }
+}
+#localizacao-main-grid > div:first-child {
+  height: 100% !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: space-between !important;
+  overflow: visible !important;
+}
+#localizacao-main-grid > div:last-child {
+  height: 100% !important;
+  display: flex !important;
+  flex-direction: column !important;
+  overflow: hidden !important;
+  border-radius: 24px !important;
+}
+#localizacao-main-grid > div:last-child iframe {
+  width: 100% !important;
+  height: 100% !important;
+  flex: 1 1 auto !important;
+  display: block !important;
+}
+
 </style>
 
 </head>
@@ -7881,7 +8086,7 @@ H.useEffect(()=>{if(!V)return;(async()=>{try{let u=await w("records.list",{colle
     ]})
   ]}),
   l("div",{onClick:()=>g("whatsapp"),title:"Clique para ver WhatsApp & Pós-Venda",className:`${K} hover:border-[#0066FF] hover:shadow-md transition-all cursor-pointer active:scale-[0.99] group`,children:[r("h2",{className:"font-bold group-hover:text-[#0066FF] transition-colors",children:"Satisfação pós-venda"}),l("p",{className:"text-sm text-slate-500 mt-2",children:["Média do dashboard: ",l("b",{className:"text-[#0066FF] text-xl",children:[Oi.toFixed(1)," ★"]})," com ",On.length," avaliações após entrega. Ver e registrar em ",r("button",{onClick:()=>g("whatsapp"),className:"font-bold text-[#0066FF]",children:"WhatsApp & Pós-venda"}),"."]}),l("p",{className:"text-sm text-slate-500 mt-2",children:["Produção agora: ",l("b",{children:[x.filter((u)=>(u.value.status||"Pendente")==="Em Lavagem").length," lavando"]})," • Tempo médio: ",l("b",{children:[TA," min"]})," • OS abertas: ",r("b",{children:Re.filter((u)=>u.value.status!=="Concluída").length})]})]})
-]}),Y==="gestão"&&l("div",{className:"grid gap-4 min-w-0 w-full",children:[(M8.length>0||Tt.length>0)&&l("div",{className:"rounded-[16px] border border-red-300 bg-red-50 p-4 text-sm font-bold text-red-800",children:["⚠ ",M8.length+Tt.filter((u)=>!li.some((i)=>i.value.name===u.value.name)).length," produtos com estoque baixo — confira em Compras e Estoque abaixo."]}),l("div",{className:"grid sm:grid-cols-3 gap-4",children:[l("div",{className:K,children:[r("p",{className:"text-xs font-bold text-neutral-500",children:"META DO MÊS"}),r("p",{className:"font-extrabold text-3xl mt-1",children:R(Pf)}),l("p",{className:"text-xs text-neutral-500 mt-1",children:["Pró-labore ",R(ht)," + custos ",R(yt)]})]}),l("div",{className:K,children:[r("p",{className:"text-xs font-bold text-neutral-500",children:"META DO DIA"}),r("p",{className:"font-extrabold text-3xl mt-1",children:R(Math.round(ct))}),l("p",{className:"text-xs text-neutral-500 mt-1",children:[nn.workdays," dias úteis • ",C8," carros/dia"]})]}),l("div",{className:K,children:[r("p",{className:"text-xs font-bold text-neutral-500",children:"GUARDA NOTURNA / MÊS"}),r("p",{className:"font-extrabold text-3xl mt-1",children:R(Ir)}),l("p",{className:"text-xs text-neutral-500 mt-1",children:[eA.filter((u)=>u.value.status==="Ativo").length," veículos ativos"]})]})]}),l("div",{className:"flex flex-wrap items-center gap-2",children:[r("button",{onClick:()=>Ai("sócios"),className:`rounded-full px-5 py-2.5 text-xs font-bold ${xe==="sócios"?"bg-[#0066FF] text-white":"bg-white border border-neutral-300 text-neutral-800"}`,children:"Sócios e Pró-labore"}),l("label",{className:"inline-flex flex-wrap sm:flex-nowrap items-center gap-2 max-w-full rounded-2xl sm:rounded-full border border-neutral-300 bg-white px-4 py-2 text-xs font-bold text-neutral-800",children:["Mais da gestão:",l("select",{value:xe==="sócios"?"sócios":xe,onChange:(u)=>Ai(u.target.value),className:"bg-transparent font-bold outline-none max-w-full min-w-0",children:[r("option",{value:"sócios",children:"Sócios e Pró-labore"}),r("option",{value:"contrato",children:"Contrato dos Sócios"}),r("option",{value:"metas",children:"Metas — Mês e Dia"}),r("option",{value:"custos",children:"Custos Fixos e Variáveis"}),r("option",{value:"compras",children:"Compras e Estoque"}),r("option",{value:"guarda",children:"Guarda Noturna"}),r("option",{value:"checklist",children:"Checklist do Dia"}),r("option",{value:"calculadora",children:"Calculadora de Gestão"})]})]})]}),xe==="sócios"&&l("div",{id:"gestao-socios",className:"grid gap-4",children:[l("div",{className:"flex flex-wrap items-center justify-between gap-2 mb-2",children:[r("h3",{className:"font-extrabold text-slate-900 text-base",children:"Sócios Cadastrados"}),r("button",{type:"button",onClick:()=>{let n=prompt("Digite o nome do novo sócio (ex.: Cadu):");if(!n||!n.trim())return;let clean=n.trim();w8(clean);uA("socio_"+clean);tA({name:clean,role:"Sócio / Gestão",share:0,prolabore:0,paid:0});Pu({title:"",owner:clean,status:"A fazer",date:un()});T(`Novo sócio ${clean} adicionado! Preencha os dados e clique em Salvar.`);},className:"rounded-full bg-[#0066FF] hover:bg-[#0052CC] text-white text-xs font-extrabold px-4 py-2 flex items-center gap-1.5 shadow-sm transition-all",children:[r("span",{children:"+"})," Cadastrar Novo Sócio"]})]}),r("div",{role:"tablist","aria-label":"Sócios",className:"grid grid-cols-1 sm:grid-cols-3 gap-2.5 sm:gap-4",children:(()=>{let socList=Array.from(new Set([...sf.map((p)=>p.value.name).filter((n)=>n&&n!=="Equipe KCL"),...C.filter((m)=>(m.value.role||"").toLowerCase().includes("sócio")||(m.value.role||"").toLowerCase().includes("socio")).map((m)=>m.value.name).filter((n)=>n&&n!=="Equipe KCL")]));return socList.length?socList:["Cadu"];})().map((u)=>{let i=sf.find((fn)=>fn.value.name===u),W=nA.filter((fn)=>fn.value.owner===u).filter((fn)=>fn.value.status!=="Feito").length,J=qe===u,pRole=u==="Equipe KCL"?"Gestão / Caixa":u==="Kayan"?"Operação / Lavagem":"Atendimento / Redes sociais";return l("button",{role:"tab","aria-selected":J,onClick:()=>{if(w8(u),i)uA(i.id),tA({name:i.value.name,role:i.value.role,share:Number(i.value.share||0),prolabore:Number(i.value.prolabore||0),paid:Number(i.value.paid||0)});Pu({title:"",owner:u,status:"A fazer",date:un()})},className:`rounded-[18px] p-4 sm:p-5 flex flex-row sm:flex-col items-center sm:items-start justify-between gap-3 sm:gap-2 min-h-[76px] sm:min-h-[148px] text-left transition-all border ${J?"bg-[#0066FF] border-[#0066FF] text-white shadow-lg shadow-[#0066FF]/25":"bg-white border-[#E2E8F0] text-slate-900 hover:border-[#0066FF] shadow-sm"}`,children:[l("div",{className:"flex sm:flex-col items-center sm:items-start gap-3 sm:gap-1.5 min-w-0 flex-1 text-left",children:[r("span",{className:`h-10 w-10 sm:h-9 sm:w-9 shrink-0 rounded-full grid place-items-center font-extrabold text-sm ${J?"bg-[#2F80ED] text-white":"bg-[#EEF4FF] text-[#0F172A]"}`,children:u.charAt(0)}),l("div",{className:"min-w-0 flex-1 text-left",children:[r("span",{className:`font-extrabold text-base sm:text-xl block truncate ${J?"text-white":"text-slate-900"}`,children:u}),r("span",{className:`text-xs sm:text-sm font-medium block truncate mt-0.5 ${J?"text-white/90":"text-slate-500"}`,children:i?.value.role||pRole})]})]}),r("span",{className:`shrink-0 inline-block rounded-full px-3 py-1 text-[11px] font-bold sm:mt-1 ${J?"bg-white text-[#0F172A]":"bg-[#FEF3C7] text-[#0F172A]"}`,children:`${W} a fazer`})]},u)})}),r("div",{className:K,children:l("p",{className:"text-sm",children:["Total pró-labore: ",r("b",{children:R(ht)})," • Já pago: ",r("b",{children:R(U8)})," • Falta receber: ",r("b",{children:R(Math.max(0,ht-U8))})]})}),(()=>{let u=sf.find((on)=>on.value.name===qe),i=u?.value||{name:qe,role:"",share:"",prolabore:"",paid:"",createdAt:""},activeKey=u?.id||("socio_"+qe),y=rA===activeKey,W=y?Er:{name:i.name,role:i.role||"",share:i.share===""||i.share==null?"":i.share,prolabore:i.prolabore===""||i.prolabore===0||i.prolabore==null?"":i.prolabore,paid:i.paid===""||i.paid===0||i.paid==null?"":i.paid},J=(on)=>{uA(activeKey);tA({...W,...on})},fn=nA.filter((on)=>on.value.owner===qe),G=fn.filter((on)=>on.value.status==="Feito").length;return l("div",{className:"grid lg:grid-cols-2 gap-4",children:[l("form",{onSubmit:async(on)=>{on.preventDefault();M(!0);try{let payload={name:qe,role:W.role||"",share:W.share===""?0:Number(W.share||0),prolabore:W.prolabore===""?0:Number(W.prolabore||0),paid:W.paid===""?0:Number(W.paid||0),createdAt:u?.value?.createdAt||new Date().toISOString()};if(u?.id){await w("records.replace",{collection:"kce_partners",id:u.id,value:payload})}else{await w("records.create",{collection:"kce_partners",value:payload,idempotency_key:`partner-${qe}`.replace(/[^a-zA-Z0-9-_]/g,"-")})}uA(null);T(`${qe} atualizado e salvo.`);await gn()}catch(zn){T(`Não foi possível salvar: ${zn instanceof Error?zn.message:String(zn)}`)}M(!1)},className:`${K} grid gap-3`,children:[l("div",{className:"flex items-center justify-between gap-2",children:[l("div",{children:[l("p",{className:"text-xs font-bold tracking-[.12em] text-[#0066FF]",children:["SÓCIO • ",Number(W.share||0),"% DA DIVISÃO"]}),r("h3",{className:"font-extrabold text-2xl mt-1 text-slate-900",children:W.name||qe||"Sócio"})]}),u?.id&&r("button",{type:"button",onClick:async()=>{if(confirm(`Excluir sócio ${u.value.name}?`)){await w2(u.id);w8("Cadu");}},className:"rounded-xl border border-rose-200 bg-rose-50 hover:bg-rose-100 text-rose-700 font-bold text-xs px-3 py-1.5 transition-all",children:"Excluir"})]}),l("div",{children:[r("label",{className:N,children:"NOME DO SÓCIO"}),r("input",{value:W.name||"",onChange:(on)=>{J({name:on.target.value});w8(on.target.value);},placeholder:"Ex.: Cadu, Bruno, etc.",className:`${O} mt-1`})]}),l("div",{children:[r("label",{className:N,children:"FUNÇÃO / RESPONSABILIDADE"}),r("input",{value:W.role||"",onChange:(on)=>J({role:on.target.value}),placeholder:"Ex.: Gestão e Atendimento",className:`${O} mt-1`})]}),l("div",{className:"grid grid-cols-2 gap-3",children:[l("div",{children:[r("label",{className:N,children:"PRÓ-LABORE / MÊS (R$)"}),r("input",{type:"number",placeholder:"Vazio ou valor",value:W.prolabore===""||W.prolabore===null||W.prolabore===void 0?"":W.prolabore,onChange:(on)=>J({prolabore:on.target.value===""?"":Number(on.target.value)}),className:`${O} mt-1`})]}),l("div",{children:[r("label",{className:N,children:"JÁ PAGO NO MÊS (R$)"}),r("input",{type:"number",placeholder:"Vazio ou valor",value:W.paid===""||W.paid===null||W.paid===void 0?"":W.paid,onChange:(on)=>J({paid:on.target.value===""?"":Number(on.target.value)}),className:`${O} mt-1`})]})]}),r("button",{disabled:j,className:s,children:j?"Salvando…":`Salvar ${qe}`})]}),l("div",{className:K,children:[r("h3",{className:"font-bold",children:"Metas do sócio"}),r("p",{className:"text-sm text-neutral-500 mt-1",children:"Divisão simples: cada sócio responde por 1/3 da meta."}),l("ul",{className:"mt-3 grid gap-2 text-sm",children:[l("li",{className:"flex justify-between",children:[r("span",{children:"Pró-labore"}),l("b",{children:[R(Number(W.prolabore||0))," / mês"]})]}),l("li",{className:"flex justify-between",children:[r("span",{children:"Parte da meta do mês"}),r("b",{children:R(Math.round(Pf/3))})]}),l("li",{className:"flex justify-between",children:[r("span",{children:"Já pago"}),r("b",{children:R(Number(W.paid||0))})]}),l("li",{className:"flex justify-between",children:[r("span",{children:"Falta receber"}),r("b",{children:R(Math.max(0,Number(W.prolabore||0)-Number(W.paid||0)))})]}),l("li",{className:"flex justify-between",children:[r("span",{children:"Tarefas"}),l("b",{children:[G," de ",fn.length," feitas"]})]})]}),r("div",{className:"h-2.5 bg-neutral-100 rounded-full mt-3 overflow-hidden",children:r("div",{className:"h-full bg-[#0066FF]",style:{width:`${fn.length?Math.round(G/fn.length*100):0}%`}})})]})]})})(),(()=>{let u=nA.filter((y)=>y.value.owner===qe).slice().sort((y,W)=>(y.value.date||"").localeCompare(W.value.date||"")),i=u.filter((y)=>y.value.status==="Feito").length;return l("div",{className:K,children:[l("h3",{className:"font-bold",children:["Tarefas a fazer — ",qe]}),l("p",{className:"text-sm text-neutral-500 mt-1",children:[i," de ",u.length," feitas • marque o quadrado quando terminar."]}),l("form",{onSubmit:N0,style:{display:"flex",flexDirection:"row",flexWrap:"nowrap",alignItems:"center",gap:"8px",width:"100%"},className:"flex flex-nowrap items-center gap-2 mt-4 w-full",children:[r("input",{value:je.title,onChange:(y)=>Pu({...je,title:y.target.value}),placeholder:"Nova tarefa…",style:{flex:"1 1 0%",minWidth:"110px",width:"auto"},className:O}),r("input",{type:"date",value:je.date,onChange:(y)=>Pu({...je,date:y.target.value}),style:{width:"160px",flex:"0 0 160px"},className:O+" shrink-0"}),r("button",{disabled:j,style:{flex:"0 0 auto",width:"auto",height:"44px"},className:s+" !h-[44px] !min-h-[44px] !max-h-[44px] !py-0 !px-5 !rounded-2xl shrink-0",children:j?"Salvando…":"+ Adicionar"})]}),r("ul",{className:"mt-4 grid gap-2",children:u.map((y)=>{let W=y.value.status==="Feito";return l("li",{className:"flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 rounded-[14px] border border-neutral-200 bg-white px-3.5 py-3 text-sm",children:[etkId===y.id?l("div",{className:"flex flex-wrap sm:flex-nowrap items-center gap-2 w-full",children:[r("input",{value:etkTxt,onChange:(J)=>setEtkTxt(J.target.value),onKeyDown:(J)=>{if(J.key==="Enter"){J.preventDefault();void kclUpdateTaskTitle(y,etkTxt)}else if(J.key==="Escape"){setEtkId(null)}},autoFocus:!0,"aria-label":"Editar tarefa",className:`${O} !py-1.5 !px-3 text-sm flex-1 min-w-[160px]`}),r("button",{type:"button",onClick:()=>void kclUpdateTaskTitle(y,etkTxt),className:"rounded-full bg-[#0066FF] text-white px-3 py-1.5 text-xs font-bold shrink-0",children:"Salvar"}),r("button",{type:"button",onClick:()=>setEtkId(null),className:ln,children:"Cancelar"})]}):l("label",{className:"flex min-w-0 w-full sm:flex-1 items-start sm:items-center gap-3 cursor-pointer",children:[r("input",{type:"checkbox",checked:W,onChange:(J)=>void D0(y,J.target.checked?"Feito":"A fazer"),className:"mt-0.5 sm:mt-0 h-5 w-5 shrink-0 accent-[#0066FF]"}),r("span",{className:`min-w-0 flex-1 text-sm sm:text-base font-medium leading-snug text-slate-900 break-words whitespace-normal ${W?"line-through text-neutral-400":""}`,children:y.value.title})]}),etkId!==y.id&&l("div",{className:"flex flex-wrap items-center justify-end sm:justify-start gap-2 shrink-0 pl-8 sm:pl-0",children:[r("input",{type:"date",value:y.value.date||"",onChange:(J)=>void q0(y,J.target.value),"aria-label":"Data da tarefa",style:{width:"124px"},className:"rounded-full border border-neutral-300 bg-slate-50 px-2.5 py-1 text-[11px] font-bold text-slate-700"}),r("button",{type:"button",onClick:()=>{setEtkId(y.id),setEtkTxt(y.value.title||"")},"aria-label":`Editar ${y.value.title}`,className:"rounded-full border border-neutral-300 bg-white hover:bg-neutral-50 px-2.5 py-1 text-xs font-bold text-slate-700 shrink-0",children:"✏️ Editar"}),Te===y.id&&Ve==="task"?l("span",{className:"flex gap-1",children:[r("button",{type:"button",onClick:()=>void O0(y.id),className:"rounded-full bg-red-600 text-white px-2.5 py-1 text-xs font-bold",children:"Sim, excluir"}),r("button",{type:"button",onClick:()=>vn(null),className:ln,children:"Cancelar"})]}):l("button",{type:"button",onClick:()=>{vn(y.id),de("task")},"aria-label":`Excluir ${y.value.title}`,className:"text-red-600 font-bold text-xs flex items-center gap-1 px-1.5 py-1 shrink-0",children:[r(lf,{size:14})," Excluir"]})]})]},y.id)})}),u.length===0&&r("p",{className:"text-sm text-neutral-500 mt-3",children:"Nenhuma tarefa ainda. Adicione a primeira acima."})]})})()]}),xe==="contrato"&&l("form",{onSubmit:V0,className:`${K} grid gap-4`,children:[l("div",{children:[r("h3",{className:"font-bold text-lg",children:"Contrato dos Sócios"}),r("p",{className:"text-sm text-neutral-500 mt-1",children:"Cole aqui o texto do contrato ou o link do Drive. Não há envio de arquivo — o texto e o link ficam salvos neste painel."})]}),l("div",{children:[r("label",{className:N,children:"TEXTO DO CONTRATO"}),r("textarea",{value:be.text,onChange:(u)=>vu({...be,text:u.target.value}),placeholder:"Cole aqui o texto do contrato…",className:`${O} !rounded-[16px] min-h-[180px] mt-1`})]}),l("div",{className:"grid sm:grid-cols-3 gap-3",children:[l("div",{children:[r("label",{className:N,children:"LINK DO DOCUMENTO (GOOGLE DRIVE)"}),r("input",{value:be.link,onChange:(u)=>vu({...be,link:u.target.value}),placeholder:"https://drive.google.com/…",className:`${O} mt-1`})]}),l("div",{children:[r("label",{className:N,children:"DATA DE ASSINATURA"}),r("input",{type:"date",value:be.signedAt,onChange:(u)=>vu({...be,signedAt:u.target.value}),className:`${O} mt-1`})]}),l("div",{children:[r("label",{className:N,children:"VIGÊNCIA"}),r("input",{value:be.validity,onChange:(u)=>vu({...be,validity:u.target.value}),placeholder:"12 meses",className:`${O} mt-1`})]})]}),l("div",{children:[r("label",{className:N,children:"OBSERVAÇÕES"}),r("textarea",{value:be.notes,onChange:(u)=>vu({...be,notes:u.target.value}),className:`${O} !rounded-[16px] min-h-[80px] mt-1`})]}),ui?.link&&l("p",{className:"text-sm",children:["Link salvo: ",r("a",{href:ui.link,target:"_blank",rel:"noopener",className:"font-bold underline break-all",children:ui.link})]}),r("button",{disabled:j,className:s,children:j?"Salvando…":"Salvar contrato"})]}),xe==="metas"&&l("div",{className:"grid gap-4",children:[l("div",{className:K,children:[r("h3",{className:"font-bold text-lg",children:"Metas Editáveis — Dia, Mês e Ano"}),l("p",{className:"text-sm text-neutral-600 mt-2",children:["Defina livremente a Meta do Dia, Meta do Mês e Meta do Ano da KCL. Atualmente: Meta do Dia ",l("b",{className:"text-[#0066FF]",children:[R(Math.round(ct))]})," • Meta do Mês ",l("b",{className:"text-[#0066FF]",children:[R(Pf)]})," • Meta do Ano ",l("b",{className:"text-[#0066FF]",children:[R(yearlyGoal)]}),"."]}),l("div",{className:"grid sm:grid-cols-3 gap-3 mt-4",children:[
+]}),Y==="gestão"&&l("div",{className:"grid gap-4 min-w-0 w-full",children:[(M8.length>0||Tt.length>0)&&l("div",{className:"rounded-[16px] border border-red-300 bg-red-50 p-4 text-sm font-bold text-red-800",children:["⚠ ",M8.length+Tt.filter((u)=>!li.some((i)=>i.value.name===u.value.name)).length," produtos com estoque baixo — confira em Compras e Estoque abaixo."]}),l("div",{className:"grid sm:grid-cols-3 gap-4",children:[l("div",{className:K,children:[r("p",{className:"text-xs font-bold text-neutral-500",children:"META DO MÊS"}),r("p",{className:"font-extrabold text-3xl mt-1",children:R(Pf)}),l("p",{className:"text-xs text-neutral-500 mt-1",children:["Pró-labore ",R(ht)," + custos ",R(yt)]})]}),l("div",{className:K,children:[r("p",{className:"text-xs font-bold text-neutral-500",children:"META DO DIA"}),r("p",{className:"font-extrabold text-3xl mt-1",children:R(Math.round(ct))}),l("p",{className:"text-xs text-neutral-500 mt-1",children:[nn.workdays," dias úteis • ",C8," carros/dia"]})]}),l("div",{className:K,children:[r("p",{className:"text-xs font-bold text-neutral-500",children:"GUARDA NOTURNA / MÊS"}),r("p",{className:"font-extrabold text-3xl mt-1",children:R(Ir)}),l("p",{className:"text-xs text-neutral-500 mt-1",children:[eA.filter((u)=>u.value.status==="Ativo").length," veículos ativos"]})]})]}),l("div",{className:"flex flex-wrap items-center gap-2",children:[r("button",{onClick:()=>Ai("sócios"),className:`h-[42px] min-h-[42px] max-h-[42px] inline-flex items-center justify-center rounded-full px-5 text-xs sm:text-[13px] font-bold transition-all shadow-sm ${xe==="sócios"?"bg-[#0066FF] text-white shadow-blue-500/20":"bg-white border border-slate-300 text-slate-800 hover:border-[#0066FF]"}`,children:"Sócios e Pró-labore"}),l("label",{className:"h-[42px] min-h-[42px] max-h-[42px] inline-flex items-center gap-2 rounded-full border border-slate-300 bg-white px-4 text-xs sm:text-[13px] font-bold text-slate-700 shadow-sm transition-all hover:border-[#0066FF] cursor-pointer",children:[r("span",{className:"text-slate-500 font-bold whitespace-nowrap text-[11px] sm:text-xs uppercase tracking-wider",children:"Mais da gestão:"}),l("select",{value:xe==="sócios"?"sócios":xe,onChange:(u)=>Ai(u.target.value),className:"kcl-subnav-select bg-transparent font-bold text-slate-800 outline-none cursor-pointer pr-1 border-0 shadow-none",style:{height:"auto",minHeight:0,maxHeight:"none",padding:0,border:"none",background:"transparent",boxShadow:"none",fontSize:"13px",fontWeight:"700",color:"#1E293B"},children:[r("option",{value:"sócios",children:"Sócios e Pró-labore"}),r("option",{value:"contrato",children:"Contrato dos Sócios"}),r("option",{value:"metas",children:"Metas — Mês e Dia"}),r("option",{value:"custos",children:"Custos Fixos e Variáveis"}),r("option",{value:"compras",children:"Compras e Estoque"}),r("option",{value:"guarda",children:"Guarda Noturna"}),r("option",{value:"checklist",children:"Checklist do Dia"}),r("option",{value:"calculadora",children:"Calculadora de Gestão"})]})]})]}),xe==="sócios"&&l("div",{id:"gestao-socios",className:"grid gap-4",children:[l("div",{className:"flex flex-wrap items-center justify-between gap-2 mb-2",children:[r("h3",{className:"font-extrabold text-slate-900 text-base",children:"Sócios Cadastrados"}),r("button",{type:"button",onClick:()=>{let n=prompt("Digite o nome do novo sócio (ex.: Cadu):");if(!n||!n.trim())return;let clean=n.trim();w8(clean);uA("socio_"+clean);tA({name:clean,role:"Sócio / Gestão",share:0,prolabore:0,paid:0});Pu({title:"",owner:clean,status:"A fazer",date:un()});T(`Novo sócio ${clean} adicionado! Preencha os dados e clique em Salvar.`);},className:"rounded-full bg-[#0066FF] hover:bg-[#0052CC] text-white text-xs font-extrabold px-4 py-2 flex items-center gap-1.5 shadow-sm transition-all",children:[r("span",{children:"+"})," Cadastrar Novo Sócio"]})]}),r("div",{role:"tablist","aria-label":"Sócios",className:"grid grid-cols-1 sm:grid-cols-3 gap-2.5 sm:gap-4",children:(()=>{let socList=Array.from(new Set([...sf.map((p)=>p.value.name).filter((n)=>n&&n!=="Equipe KCL"),...C.filter((m)=>(m.value.role||"").toLowerCase().includes("sócio")||(m.value.role||"").toLowerCase().includes("socio")).map((m)=>m.value.name).filter((n)=>n&&n!=="Equipe KCL")]));return socList.length?socList:["Cadu"];})().map((u)=>{let i=sf.find((fn)=>fn.value.name===u),W=nA.filter((fn)=>fn.value.owner===u).filter((fn)=>fn.value.status!=="Feito").length,J=qe===u,pRole=u==="Equipe KCL"?"Gestão / Caixa":u==="Kayan"?"Operação / Lavagem":"Atendimento / Redes sociais";return l("button",{role:"tab","aria-selected":J,onClick:()=>{if(w8(u),i)uA(i.id),tA({name:i.value.name,role:i.value.role,share:Number(i.value.share||0),prolabore:Number(i.value.prolabore||0),paid:Number(i.value.paid||0)});Pu({title:"",owner:u,status:"A fazer",date:un()})},className:`rounded-[18px] p-4 sm:p-5 flex flex-row sm:flex-col items-center sm:items-start justify-between gap-3 sm:gap-2 min-h-[76px] sm:min-h-[148px] text-left transition-all border ${J?"bg-[#0066FF] border-[#0066FF] text-white shadow-lg shadow-[#0066FF]/25":"bg-white border-[#E2E8F0] text-slate-900 hover:border-[#0066FF] shadow-sm"}`,children:[l("div",{className:"flex sm:flex-col items-center sm:items-start gap-3 sm:gap-1.5 min-w-0 flex-1 text-left",children:[r("span",{className:`h-10 w-10 sm:h-9 sm:w-9 shrink-0 rounded-full grid place-items-center font-extrabold text-sm ${J?"bg-[#2F80ED] text-white":"bg-[#EEF4FF] text-[#0F172A]"}`,children:u.charAt(0)}),l("div",{className:"min-w-0 flex-1 text-left",children:[r("span",{className:`font-extrabold text-base sm:text-xl block truncate ${J?"text-white":"text-slate-900"}`,children:u}),r("span",{className:`text-xs sm:text-sm font-medium block truncate mt-0.5 ${J?"text-white/90":"text-slate-500"}`,children:i?.value.role||pRole})]})]}),r("span",{className:`shrink-0 inline-block rounded-full px-3 py-1 text-[11px] font-bold sm:mt-1 ${J?"bg-white text-[#0F172A]":"bg-[#FEF3C7] text-[#0F172A]"}`,children:`${W} a fazer`})]},u)})}),r("div",{className:K,children:l("p",{className:"text-sm",children:["Total pró-labore: ",r("b",{children:R(ht)})," • Já pago: ",r("b",{children:R(U8)})," • Falta receber: ",r("b",{children:R(Math.max(0,ht-U8))})]})}),(()=>{let u=sf.find((on)=>on.value.name===qe),i=u?.value||{name:qe,role:"",share:"",prolabore:"",paid:"",createdAt:""},activeKey=u?.id||("socio_"+qe),y=rA===activeKey,W=y?Er:{name:i.name,role:i.role||"",share:i.share===""||i.share==null?"":i.share,prolabore:i.prolabore===""||i.prolabore===0||i.prolabore==null?"":i.prolabore,paid:i.paid===""||i.paid===0||i.paid==null?"":i.paid},J=(on)=>{uA(activeKey);tA({...W,...on})},fn=nA.filter((on)=>on.value.owner===qe),G=fn.filter((on)=>on.value.status==="Feito").length;return l("div",{className:"grid lg:grid-cols-2 gap-4",children:[l("form",{onSubmit:async(on)=>{on.preventDefault();M(!0);try{let payload={name:qe,role:W.role||"",share:W.share===""?0:Number(W.share||0),prolabore:W.prolabore===""?0:Number(W.prolabore||0),paid:W.paid===""?0:Number(W.paid||0),createdAt:u?.value?.createdAt||new Date().toISOString()};if(u?.id){await w("records.replace",{collection:"kce_partners",id:u.id,value:payload})}else{await w("records.create",{collection:"kce_partners",value:payload,idempotency_key:`partner-${qe}`.replace(/[^a-zA-Z0-9-_]/g,"-")})}uA(null);T(`${qe} atualizado e salvo.`);await gn()}catch(zn){T(`Não foi possível salvar: ${zn instanceof Error?zn.message:String(zn)}`)}M(!1)},className:`${K} grid gap-3`,children:[l("div",{className:"flex items-center justify-between gap-2",children:[l("div",{className:"text-left flex flex-col items-start justify-start",children:[l("p",{className:"text-left text-xs font-bold tracking-[.12em] text-[#0066FF]",children:["SÓCIO • ",Number(W.share||0),"% DA DIVISÃO"]}),r("h3",{className:"text-left font-extrabold text-2xl mt-1 text-slate-900",children:W.name||qe||"Sócio"})]}),u?.id&&r("button",{type:"button",onClick:async()=>{if(confirm(`Excluir sócio ${u.value.name}?`)){await w2(u.id);w8("Cadu");}},className:"rounded-xl border border-rose-200 bg-rose-50 hover:bg-rose-100 text-rose-700 font-bold text-xs px-3 py-1.5 transition-all",children:"Excluir"})]}),l("div",{children:[r("label",{className:N,children:"NOME DO SÓCIO"}),r("input",{value:W.name||"",onChange:(on)=>{J({name:on.target.value});w8(on.target.value);},placeholder:"Ex.: Cadu, Bruno, etc.",className:`${O} mt-1`})]}),l("div",{children:[r("label",{className:N,children:"FUNÇÃO / RESPONSABILIDADE"}),r("input",{value:W.role||"",onChange:(on)=>J({role:on.target.value}),placeholder:"Ex.: Gestão e Atendimento",className:`${O} mt-1`})]}),l("div",{className:"grid grid-cols-2 gap-3",children:[l("div",{children:[r("label",{className:N,children:"PRÓ-LABORE / MÊS (R$)"}),r("input",{type:"number",placeholder:"Vazio ou valor",value:W.prolabore===""||W.prolabore===null||W.prolabore===void 0?"":W.prolabore,onChange:(on)=>J({prolabore:on.target.value===""?"":Number(on.target.value)}),className:`${O} mt-1`})]}),l("div",{children:[r("label",{className:N,children:"JÁ PAGO NO MÊS (R$)"}),r("input",{type:"number",placeholder:"Vazio ou valor",value:W.paid===""||W.paid===null||W.paid===void 0?"":W.paid,onChange:(on)=>J({paid:on.target.value===""?"":Number(on.target.value)}),className:`${O} mt-1`})]})]}),r("button",{disabled:j,className:s,children:j?"Salvando…":`Salvar ${qe}`})]}),l("div",{className:K,children:[r("h3",{className:"font-bold",children:"Metas do sócio"}),r("p",{className:"text-sm text-neutral-500 mt-1",children:"Divisão simples: cada sócio responde por 1/3 da meta."}),l("ul",{className:"mt-3 grid gap-2 text-sm",children:[l("li",{className:"flex justify-between",children:[r("span",{children:"Pró-labore"}),l("b",{children:[R(Number(W.prolabore||0))," / mês"]})]}),l("li",{className:"flex justify-between",children:[r("span",{children:"Parte da meta do mês"}),r("b",{children:R(Math.round(Pf/3))})]}),l("li",{className:"flex justify-between",children:[r("span",{children:"Já pago"}),r("b",{children:R(Number(W.paid||0))})]}),l("li",{className:"flex justify-between",children:[r("span",{children:"Falta receber"}),r("b",{children:R(Math.max(0,Number(W.prolabore||0)-Number(W.paid||0)))})]}),l("li",{className:"flex justify-between",children:[r("span",{children:"Tarefas"}),l("b",{children:[G," de ",fn.length," feitas"]})]})]}),r("div",{className:"h-2.5 bg-neutral-100 rounded-full mt-3 overflow-hidden",children:r("div",{className:"h-full bg-[#0066FF]",style:{width:`${fn.length?Math.round(G/fn.length*100):0}%`}})})]})]})})(),(()=>{let u=nA.filter((y)=>y.value.owner===qe).slice().sort((y,W)=>(y.value.date||"").localeCompare(W.value.date||"")),i=u.filter((y)=>y.value.status==="Feito").length;return l("div",{className:K,children:[l("h3",{className:"font-bold",children:["Tarefas a fazer — ",qe]}),l("p",{className:"text-sm text-neutral-500 mt-1",children:[i," de ",u.length," feitas • marque o quadrado quando terminar."]}),l("form",{onSubmit:N0,style:{display:"flex",flexDirection:"row",flexWrap:"nowrap",alignItems:"center",gap:"8px",width:"100%"},className:"flex flex-nowrap items-center gap-2 mt-4 w-full",children:[r("input",{value:je.title,onChange:(y)=>Pu({...je,title:y.target.value}),placeholder:"Nova tarefa…",style:{flex:"1 1 0%",minWidth:"110px",width:"auto"},className:O}),r("input",{type:"date",value:je.date,onChange:(y)=>Pu({...je,date:y.target.value}),style:{width:"160px",flex:"0 0 160px"},className:O+" shrink-0"}),r("button",{disabled:j,style:{flex:"0 0 auto",width:"auto",height:"44px"},className:s+" !h-[44px] !min-h-[44px] !max-h-[44px] !py-0 !px-5 !rounded-2xl shrink-0",children:j?"Salvando…":"+ Adicionar"})]}),r("ul",{className:"mt-4 grid gap-2",children:u.map((y)=>{let W=y.value.status==="Feito";return l("li",{className:"flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 rounded-[14px] border border-neutral-200 bg-white px-3.5 py-3 text-sm",children:[etkId===y.id?l("div",{className:"flex flex-wrap sm:flex-nowrap items-center gap-2 w-full",children:[r("input",{value:etkTxt,onChange:(J)=>setEtkTxt(J.target.value),onKeyDown:(J)=>{if(J.key==="Enter"){J.preventDefault();void kclUpdateTaskTitle(y,etkTxt)}else if(J.key==="Escape"){setEtkId(null)}},autoFocus:!0,"aria-label":"Editar tarefa",className:`${O} !py-1.5 !px-3 text-sm flex-1 min-w-[160px]`}),r("button",{type:"button",onClick:()=>void kclUpdateTaskTitle(y,etkTxt),className:"rounded-full bg-[#0066FF] text-white px-3 py-1.5 text-xs font-bold shrink-0",children:"Salvar"}),r("button",{type:"button",onClick:()=>setEtkId(null),className:ln,children:"Cancelar"})]}):l("label",{className:"flex min-w-0 w-full sm:flex-1 items-start sm:items-center gap-3 cursor-pointer",children:[r("input",{type:"checkbox",checked:W,onChange:(J)=>void D0(y,J.target.checked?"Feito":"A fazer"),className:"mt-0.5 sm:mt-0 h-5 w-5 shrink-0 accent-[#0066FF]"}),r("span",{className:`min-w-0 flex-1 text-sm sm:text-base font-medium leading-snug text-slate-900 break-words whitespace-normal ${W?"line-through text-neutral-400":""}`,children:y.value.title})]}),etkId!==y.id&&l("div",{className:"flex flex-wrap items-center justify-end sm:justify-start gap-2 shrink-0 pl-8 sm:pl-0",children:[r("input",{type:"date",value:y.value.date||"",onChange:(J)=>void q0(y,J.target.value),"aria-label":"Data da tarefa",style:{width:"124px"},className:"rounded-full border border-neutral-300 bg-slate-50 px-2.5 py-1 text-[11px] font-bold text-slate-700"}),r("button",{type:"button",onClick:()=>{setEtkId(y.id),setEtkTxt(y.value.title||"")},"aria-label":`Editar ${y.value.title}`,className:"rounded-full border border-neutral-300 bg-white hover:bg-neutral-50 px-2.5 py-1 text-xs font-bold text-slate-700 shrink-0",children:"✏️ Editar"}),Te===y.id&&Ve==="task"?l("span",{className:"flex gap-1",children:[r("button",{type:"button",onClick:()=>void O0(y.id),className:"rounded-full bg-red-600 text-white px-2.5 py-1 text-xs font-bold",children:"Sim, excluir"}),r("button",{type:"button",onClick:()=>vn(null),className:ln,children:"Cancelar"})]}):l("button",{type:"button",onClick:()=>{vn(y.id),de("task")},"aria-label":`Excluir ${y.value.title}`,className:"text-red-600 font-bold text-xs flex items-center gap-1 px-1.5 py-1 shrink-0",children:[r(lf,{size:14})," Excluir"]})]})]},y.id)})}),u.length===0&&r("p",{className:"text-sm text-neutral-500 mt-3",children:"Nenhuma tarefa ainda. Adicione a primeira acima."})]})})()]}),xe==="contrato"&&l("form",{onSubmit:V0,className:`${K} grid gap-4`,children:[l("div",{children:[r("h3",{className:"font-bold text-lg",children:"Contrato dos Sócios"}),r("p",{className:"text-sm text-neutral-500 mt-1",children:"Cole aqui o texto do contrato ou o link do Drive. Não há envio de arquivo — o texto e o link ficam salvos neste painel."})]}),l("div",{children:[r("label",{className:N,children:"TEXTO DO CONTRATO"}),r("textarea",{value:be.text,onChange:(u)=>vu({...be,text:u.target.value}),placeholder:"Cole aqui o texto do contrato…",className:`${O} !rounded-[16px] min-h-[180px] mt-1`})]}),l("div",{className:"grid sm:grid-cols-3 gap-3",children:[l("div",{children:[r("label",{className:N,children:"LINK DO DOCUMENTO (GOOGLE DRIVE)"}),r("input",{value:be.link,onChange:(u)=>vu({...be,link:u.target.value}),placeholder:"https://drive.google.com/…",className:`${O} mt-1`})]}),l("div",{children:[r("label",{className:N,children:"DATA DE ASSINATURA"}),r("input",{type:"date",value:be.signedAt,onChange:(u)=>vu({...be,signedAt:u.target.value}),className:`${O} mt-1`})]}),l("div",{children:[r("label",{className:N,children:"VIGÊNCIA"}),r("input",{value:be.validity,onChange:(u)=>vu({...be,validity:u.target.value}),placeholder:"12 meses",className:`${O} mt-1`})]})]}),l("div",{children:[r("label",{className:N,children:"OBSERVAÇÕES"}),r("textarea",{value:be.notes,onChange:(u)=>vu({...be,notes:u.target.value}),className:`${O} !rounded-[16px] min-h-[80px] mt-1`})]}),ui?.link&&l("p",{className:"text-sm",children:["Link salvo: ",r("a",{href:ui.link,target:"_blank",rel:"noopener",className:"font-bold underline break-all",children:ui.link})]}),r("button",{disabled:j,className:s,children:j?"Salvando…":"Salvar contrato"})]}),xe==="metas"&&l("div",{className:"grid gap-4",children:[l("div",{className:K,children:[r("h3",{className:"font-bold text-lg",children:"Metas Editáveis — Dia, Mês e Ano"}),l("p",{className:"text-sm text-neutral-600 mt-2",children:["Defina livremente a Meta do Dia, Meta do Mês e Meta do Ano da KCL. Atualmente: Meta do Dia ",l("b",{className:"text-[#0066FF]",children:[R(Math.round(ct))]})," • Meta do Mês ",l("b",{className:"text-[#0066FF]",children:[R(Pf)]})," • Meta do Ano ",l("b",{className:"text-[#0066FF]",children:[R(yearlyGoal)]}),"."]}),l("div",{className:"grid sm:grid-cols-3 gap-3 mt-4",children:[
   l("div",{children:[r("label",{className:N,children:"META DO DIA (R$)"}),r("input",{type:"number",placeholder:String(Math.round(ct)),value:nn.customDailyGoal||"",onChange:(u)=>ot({...nn,customDailyGoal:u.target.value===""?"":Number(u.target.value)}),className:`${O} mt-1`})]}),
   l("div",{children:[r("label",{className:N,children:"META DO MÊS (R$)"}),r("input",{type:"number",placeholder:String(Pf),value:nn.customMonthlyGoal||"",onChange:(u)=>ot({...nn,customMonthlyGoal:u.target.value===""?"":Number(u.target.value)}),className:`${O} mt-1`})]}),
   l("div",{children:[r("label",{className:N,children:"META DO ANO (R$)"}),r("input",{type:"number",placeholder:String(yearlyGoal),value:nn.customYearlyGoal||"",onChange:(u)=>ot({...nn,customYearlyGoal:u.target.value===""?"":Number(u.target.value)}),className:`${O} mt-1`})]}),
@@ -9115,7 +9320,7 @@ H.useEffect(()=>{if(!V)return;(async()=>{try{let u=await w("records.list",{colle
         ]})
       ]}),
       l("div",{id:"localizacao-main-grid",className:"grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-10 mt-12 sm:mt-14 items-stretch w-full min-w-0",children:[
-        l("div",{className:"card-round border border-[var(--line)] bg-[#0A1633] p-6 sm:p-8 lg:p-9 flex flex-col justify-between text-left h-full min-w-0 w-full overflow-hidden",children:[
+        l("div",{className:"card-round border border-[var(--line)] bg-[#0A1633] p-6 sm:p-8 lg:p-9 flex flex-col justify-between text-left h-full min-w-0 w-full overflow-visible",children:[
           l("div",{className:"space-y-4 min-w-0",children:[
             r("h3",{className:"text-xl sm:text-3xl font-extrabold text-white mt-2 font-sans tracking-tight leading-snug",children:"KCL Estética Automotiva"}),
             l("p",{className:"text-[16px] sm:text-[19px] text-[#F2F6FF] font-bold mt-2 flex items-start gap-2.5 leading-relaxed",children:[
@@ -9131,14 +9336,13 @@ H.useEffect(()=>{if(!V)return;(async()=>{try{let u=await w("records.list",{colle
               l("p",{className:"text-[14.5px] sm:text-[16px] text-[#C8D0DA] leading-relaxed text-left",style:{textAlign:"left",textJustify:"auto"},children:[r("span",{className:"text-[#2F9BFF] font-bold",children:"🛡️ Segurança: "}),r("span",{className:"text-[#C8D0DA]",children:"Pátio fechado com monitoramento por câmeras de segurança 24 horas."})]})
             ]})
           ]}),
-        ]}),
-        l("div",{className:"card-round border border-[var(--line)] bg-[#050B1A] overflow-hidden min-h-[340px] sm:min-h-[480px] h-full w-full min-w-0 relative shadow-lg rounded-[24px] flex flex-col",children:[
-          r("iframe",{title:"Mapa KCL Estética Automotiva - Rua Belo Horizonte 80",src:"https://maps.google.com/maps?q=Rua+Belo+Horizonte+80,+Sao+Jose,+Montes+Claros+-+MG&t=&z=16&ie=UTF8&iwloc=&output=embed",width:"100%",height:"100%",style:{border:0,minHeight:"320px",height:"100%",width:"100%",flex:"1 1 auto",display:"block",filter:"contrast(1.05) invert(0.9) hue-rotate(180deg)"},loading:"lazy",referrerPolicy:"no-referrer-when-downgrade"}),
-          l("div",{className:"p-4 sm:p-5 bg-[#0A1633] border-t border-[var(--line)] grid grid-cols-1 sm:grid-cols-3 gap-2.5 w-full min-w-0 shrink-0",children:[
-            r("a",{href:"https://www.google.com/maps/search/?api=1&query=Rua+Belo+Horizonte+80+Sao+Jose+Montes+Claros+MG",target:"_blank",rel:"noopener noreferrer",className:"btn-teal pill py-3 px-2 text-center font-bold text-xs tracking-wider uppercase block shadow-lg shadow-[#0066FF]/30 w-full",children:"GOOGLE MAPS"}),
-            r("a",{href:"https://waze.com/ul?q=Rua+Belo+Horizonte+80+Montes+Claros+MG&navigate=yes",target:"_blank",rel:"noopener noreferrer",className:"btn-line pill py-3 px-2 text-center font-bold text-xs tracking-wider uppercase block hover:border-[#2F9BFF] w-full",children:"ABRIR NO WAZE"}),
-            r("a",{href:"https://wa.me/553898122276?text=Ol%C3%A1%20KCL%20Est%C3%A9tica%20Automotiva!%20Gostaria%20de%20agendar%20um%20hor%C3%A1rio.",target:"_blank",rel:"noopener noreferrer",className:"pill py-3 px-2 text-center font-bold text-xs tracking-wider uppercase block bg-emerald-600 hover:bg-emerald-500 text-white shadow-lg shadow-emerald-600/30 w-full",children:"💬 WHATSAPP"})
+          l("div",{className:"mt-8 pt-5 border-t border-[var(--line)] grid grid-cols-1 sm:grid-cols-2 gap-3 w-full min-w-0 shrink-0",children:[
+            r("a",{href:"https://www.google.com/maps/search/?api=1&query=Rua+Belo+Horizonte+80+Sao+Jose+Montes+Claros+MG",target:"_blank",rel:"noopener noreferrer",className:"btn-teal pill py-3.5 px-4 text-center font-bold text-xs tracking-wider uppercase block shadow-lg shadow-[#0066FF]/30 w-full",children:"GOOGLE MAPS"}),
+            r("a",{href:"https://waze.com/ul?q=Rua+Belo+Horizonte+80+Montes+Claros+MG&navigate=yes",target:"_blank",rel:"noopener noreferrer",className:"btn-line pill py-3.5 px-4 text-center font-bold text-xs tracking-wider uppercase block hover:border-[#2F9BFF] w-full",children:"ABRIR NO WAZE"})
           ]})
+        ]}),
+        l("div",{className:"card-round border border-[var(--line)] bg-[#050B1A] overflow-hidden min-h-[420px] sm:min-h-[500px] h-full w-full min-w-0 relative shadow-lg rounded-[24px] flex flex-col",children:[
+          r("iframe",{title:"Mapa KCL Estética Automotiva - Rua Belo Horizonte 80",src:"https://maps.google.com/maps?q=Rua+Belo+Horizonte+80,+Sao+Jose,+Montes+Claros+-+MG&t=&z=16&ie=UTF8&iwloc=&output=embed",width:"100%",height:"100%",style:{border:0,minHeight:"420px",height:"100%",width:"100%",flex:"1 1 auto",display:"block",filter:"contrast(1.05) invert(0.9) hue-rotate(180deg)"},loading:"lazy",referrerPolicy:"no-referrer-when-downgrade"})
         ]})
       ]})
     ]}),l("footer",{className:"relative overflow-hidden border-t border-[var(--line)] bg-[#03081A] pb-8",children:[r(Af,{count:8}),l("div",{className:"relative max-w-6xl mx-auto px-4 sm:px-6 py-12 grid md:grid-cols-3 gap-8",children:[l("div",{className:"flex gap-3 items-start",children:[r("img",{src:kclLogoUrl,alt:"Logo KCL",className:"h-12 w-12 rounded-full object-cover shrink-0 shadow-md shadow-[#0066FF]/30 border border-[#2F9BFF]/40"}),l("div",{children:[r("p",{className:"font-extrabold tracking-wide text-lg",children:"KCL"}),l("p",{className:"text-[10px] tracking-[.18em] text-[#93A3BC] leading-[1.35]",children:[r("span",{className:"block text-white/95 font-bold tracking-wider",children:"ESTÉTICA AUTOMOTIVA"}),r("span",{className:"block text-[#2F9BFF] font-bold tracking-widest mt-0.5",children:"MONTES CLAROS"})]}),r("p",{className:"text-sm text-[#93A3BC] mt-3 leading-relaxed",children:"Precisão em cada detalhe. Lava-jato premium com acabamento de estúdio."})]})]}),l("div",{children:[r("h3",{className:"font-bold tracking-wide text-sm",children:"HORÁRIO & CONTATO"}),l("div",{className:"text-[13px] sm:text-sm text-[#93A3BC] mt-4 space-y-1.5 leading-relaxed",children:[r("p",{className:"whitespace-nowrap",children:"Segunda a sexta • 08h às 18h"}),r("p",{className:"whitespace-nowrap",children:"Sábado • 08h às 14h"}),r("p",{className:"whitespace-nowrap",children:"Rua Belo Horizonte, 80 — Bairro São José"}),r("p",{className:"whitespace-nowrap",children:"Próx. Praça de Esportes • Montes Claros/MG"}),l("p",{className:"whitespace-nowrap",children:["Instagram: ",r("a",{href:"https://instagram.com/kclesteticaautomotiva",target:"_blank",rel:"noopener noreferrer",className:"text-[#2F9BFF] hover:underline font-semibold",children:"@kclesteticaautomotiva"})]}),l("p",{className:"whitespace-nowrap",children:["WhatsApp: ",r("a",{href:"https://wa.me/553898122276?text=Ol%C3%A1%20KCL%20Est%C3%A9tica%20Automotiva!%20Gostaria%20de%20agendar%20um%20hor%C3%A1rio.",target:"_blank",rel:"noopener noreferrer",className:"text-emerald-400 hover:underline font-semibold",children:"(38) 9812-2276"})]})]})]}),l("div",{className:"min-w-0",children:[r("h3",{className:"font-bold tracking-wide text-sm",children:"COMECE AGORA"}),l("div",{className:"mt-4 flex flex-wrap items-center gap-2",children:[r("a",{href:"#agendar",className:"btn-teal pill inline-flex shrink-0 items-center gap-2 px-5 py-3 font-bold text-[12px]",children:"AGENDAR SERVIÇO"}),l("a",{href:"#corrida",className:"btn-line pill inline-flex shrink-0 items-center gap-2 px-5 py-3 font-bold text-[12px]",children:[r(Dr,{size:15})," KCL GP"]})]}),]})]}),r("div",{className:"relative border-t border-[var(--line)] pt-5 pb-4 text-center text-xs text-[#93A3BC]",children:"© 2026 KCL Estética Automotiva • Montes Claros - MG • Todos os direitos reservados."})]})]})]})})}x5.createRoot(document.getElementById("root")).render(r(b5.default.StrictMode,{children:r(s7,{})}));
@@ -9471,7 +9675,7 @@ function setupSociosShift() { return;
           app: "KCL Estética Automotiva",
           subdomain: "kcl.emia.workers.dev",
           location: "Montes Claros - MG",
-          version: "kcl-build-20261117-v690-layout-spacing-perfection",
+          version: "kcl-build-20261117-v750-all-requests-satisfied",
           trigger: triggerType || "manual",
           timestamp: now.toISOString(),
           date: todayKey,
