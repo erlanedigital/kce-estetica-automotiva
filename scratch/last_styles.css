@@ -1,0 +1,189 @@
+<style id="kcl-rich-effects">
+  /* ANIMAÇÃO DAS LETRAS SUBINDO (REVEAL UP) */
+  @keyframes letterUp {
+    0% {
+      opacity: 0;
+      transform: translateY(28px) scale(0.96);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  @keyframes floatSoft {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-6px); }
+  }
+
+  @keyframes glowBorder {
+    0%, 100% { border-color: rgba(47, 155, 255, 0.25); box-shadow: 0 0 15px rgba(0, 102, 255, 0.1); }
+    50% { border-color: rgba(47, 155, 255, 0.6); box-shadow: 0 0 25px rgba(0, 102, 255, 0.25); }
+  }
+
+  /* Aplica o efeito nas palavras dos títulos principais e H1/H2 */
+  h1, h2, .font-display, .font-elegant {
+    animation: letterUp 0.85s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  /* Efeito de brilho nos botões e cards de serviço */
+  .btn-teal, .btn-line {
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  }
+  .btn-teal:hover {
+    transform: translateY(-2px) scale(1.02) !important;
+    box-shadow: 0 10px 25px -5px rgba(0, 102, 255, 0.5) !important;
+  }
+
+  /* TODOS OS SERVIÇOS 100% VISÍVEIS NO MOBILE E ÍCONES SEMPRE AO LADO DAS FRASES */
+  @media (max-width: 768px) {
+    #servicos > div.grid {
+      display: grid !important;
+      grid-template-columns: 1fr !important;
+      overflow-x: visible !important;
+      gap: 24px !important;
+      width: 100% !important;
+      padding: 0 !important;
+    }
+    #servicos > div.grid > article {
+      display: flex !important;
+      flex-direction: column !important;
+      width: 100% !important;
+      max-width: 100% !important;
+      min-width: 0 !important;
+      flex: none !important;
+    }
+  }
+  #servicos ul li,
+  #pacotes ul li {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 10px !important;
+    text-align: left !important;
+  }
+  #servicos ul li svg,
+  #pacotes ul li svg {
+    flex-shrink: 0 !important;
+    margin-top: 0 !important;
+  }
+  /* 3 PASSOS E ZERO ESTRESSE EM UMA LINHA SÓ E MAIOR */
+  .passos-heading {
+    white-space: nowrap !important;
+    font-size: clamp(1.4rem, 3.5vw, 2.2rem) !important;
+    font-weight: 800 !important;
+    display: inline-block !important;
+  }
+
+
+/* =========================================================
+   📱 PAINEL ADMIN 100% RESPONSIVO NO MOBILE (ZERO OVERFLOW / CORTES)
+   ========================================================= */
+@media (max-width: 768px) {
+  .admin-shell .admin-topbar {
+    padding: 14px 12px !important;
+  }
+  .admin-shell .admin-topbar .kcl-wide-container {
+    gap: 10px !important;
+  }
+  .admin-shell .admin-topbar h1 {
+    font-size: 20px !important;
+    white-space: normal !important;
+    line-height: 1.2 !important;
+  }
+  .admin-shell .admin-topbar p,
+  .admin-shell .admin-kpi p:first-child,
+  .admin-shell button {
+    white-space: normal !important;
+  }
+  .admin-shell .admin-scroll button {
+    white-space: nowrap !important;
+    flex-shrink: 0 !important;
+  }
+  .admin-shell main {
+    padding: 12px 10px 40px 10px !important;
+  }
+  .admin-shell .admin-kpi {
+    padding: 14px 12px !important;
+    gap: 8px !important;
+  }
+  .admin-shell .admin-kpi p:first-child {
+    font-size: 10px !important;
+    letter-spacing: 0.06em !important;
+  }
+  .admin-shell table {
+    font-size: 12.5px !important;
+  }
+  .admin-shell .grid {
+    min-width: 0 !important;
+  }
+  .admin-shell .admin-modal,
+  .admin-shell [class*="max-w-lg"],
+  .admin-shell [class*="max-w-2xl"] {
+    width: 100% !important;
+    max-width: calc(100vw - 20px) !important;
+    max-height: 88vh !important;
+    overflow-y: auto !important;
+    padding: 16px !important;
+  }
+}
+
+
+
+/* =========================================================
+   📖 CORPO DE TEXTO JUSTIFICADO & RESPONSIVIDADE TOTAL (SITE + PAINEL ADM)
+   ========================================================= */
+html, body, #root {
+  max-width: 100vw !important;
+  overflow-x: hidden !important;
+}
+
+/* Justificar corpos de texto descritivos SOMENTE NO MOBILE */
+@media (max-width: 768px) {
+  main#top section p.leading-relaxed:not(.text-center),
+  main#top #servicos article p,
+  main#top .steps-cascade p,
+  main#top .corrida-desc-text,
+  main#top #agendar > div:first-child > p:not(:first-child),
+  main#top section article p.leading-relaxed,
+  footer p.leading-relaxed {
+    text-align: justify !important;
+    text-justify: inter-word !important;
+    hyphens: auto !important;
+  }
+}
+
+/* Responsividade 100% blindada em todas as telas do Painel ADM no mobile/tablet */
+@media (max-width: 768px) {
+  .admin-shell,
+  .admin-shell > div,
+  .admin-shell .flex-1,
+  .admin-shell main {
+    width: 100% !important;
+    max-width: 100vw !important;
+    overflow-x: hidden !important;
+    box-sizing: border-box !important;
+  }
+  .admin-shell form {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+  .admin-shell form > div,
+  .admin-shell form > button {
+    grid-column: span 1 / span 1 !important;
+    width: 100% !important;
+    min-width: 0 !important;
+  }
+  .admin-shell #gestao-socios [role="tablist"] {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+  .admin-shell #socios-shift-container > div:last-child {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+  .admin-shell .overflow-x-auto {
+    max-width: calc(100vw - 24px) !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+}
+
+</style>

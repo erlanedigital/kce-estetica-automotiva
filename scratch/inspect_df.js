@@ -1,9 +1,14 @@
 const fs = require('fs');
-const html = fs.readFileSync('index.html', 'utf8');
-const p = html.indexOf('id:"experiencia"');
-const slice = html.substring(p - 3000, p + 500);
-const matches = [...slice.matchAll(/\bDf\b/g)];
-console.log('Matches for Df near experiencia:', matches.length);
-matches.forEach((m, idx) => {
-  console.log(`[${idx}] at ${m.index}: ` + slice.substring(Math.max(0, m.index - 60), Math.min(slice.length, m.index + 80)));
-});
+const content = fs.readFileSync('C:/Users/ERLANE/.gemini/antigravity/scratch/kce-estetica-automotiva/index.html', 'utf8');
+
+function searchAround(term) {
+  let idx = content.indexOf(term);
+  if (idx !== -1) {
+    console.log(`=== FOUND: ${term} at ${idx} ===`);
+    console.log(content.substring(Math.max(0, idx - 100), Math.min(content.length, idx + 200)));
+  }
+}
+
+searchAround('Df=');
+searchAround('Df =');
+searchAround('[Df');
