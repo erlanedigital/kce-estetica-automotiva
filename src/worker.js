@@ -2,7 +2,7 @@
  * Cloudflare Worker — KCL Estética Automotiva
  * Subdomínio Oficial: kcl.emia.workers.dev
  * Lava-jato Premium em Montes Claros - MG
- * Servindo Aplicação Original Completa, PWA, Ações e Roteamento SPA
+ * Servindo Aplicação Original Completa, PWA, Ações, Backup e Roteamento SPA
  */
 
 const SECURITY_HEADERS = {
@@ -23,7 +23,7 @@ const CORS_HEADERS = {
   "Access-Control-Max-Age": "86400"
 };
 
-// In-memory collections store fallback
+// In-memory collections store fallback com suporte a backups
 const collections = {
   kce_bookings: [],
   kce_services: [],
@@ -32,7 +32,8 @@ const collections = {
   kce_finance: [],
   kce_gp_scores: [],
   kce_partners: [],
-  kce_settings: []
+  kce_settings: [],
+  kce_backups: []
 };
 
 function addSecurityHeaders(response, customHeaders = {}) {
@@ -50,7 +51,55 @@ function addSecurityHeaders(response, customHeaders = {}) {
   });
 }
 
+// Consolidador de Backup do Sistema
+function generateSystemBackupSnapshot(triggerType = "auto_midnight") {
+  const now = new Date();
+  return {
+    meta: {
+      app: "KCL Estética Automotiva",
+      domain: "kcl.emia.workers.dev",
+      trigger: triggerType,
+      timestamp: now.toISOString(),
+      date: now.toISOString().split("T")[0],
+      serverTimeBRT: now.toLocaleString("pt-BR", { timeZone: "America/Sao_Paulo" })
+    },
+    collections: { ...collections }
+  };
+}
+
 export default {
+  // Rotina Cron Agendada: Dispara todo dia à meia-noite (00:00 BRT / 03:00 UTC)
+  async scheduled(event, env, ctx) {
+    console.log("⏰ [CRON WORKER] Executando rotina diária de backup da meia-noite...");
+    const snapshot = generateSystemBackupSnapshot("cron_worker_midnight");
+    const id = "backup-cron-midnight-" + snapshot.meta.date;
+
+    // Salva no banco de dados interno
+    collections.kce_backups.push({
+      id: id,
+      value: snapshot
+    });
+
+    // Se houver Webhook do Google Drive configurado na Cloudflare
+    if (env && env.GDRIVE_WEBHOOK_URL) {
+      try {
+        await fetch(env.GDRIVE_WEBHOOK_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            filename: `kcl_backup_auto_${snapshot.meta.date}.json`,
+            content: JSON.stringify(snapshot, null, 2),
+            timestamp: snapshot.meta.timestamp,
+            source: "Cloudflare Worker Cron"
+          })
+        });
+        console.log("✅ [CRON WORKER] Backup enviado com sucesso para o Google Drive!");
+      } catch (e) {
+        console.error("⚠️ [CRON WORKER] Erro ao enviar webhook do Google Drive:", e);
+      }
+    }
+  },
+
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
 
@@ -112,7 +161,61 @@ export default {
       }
     }
 
-    // 2. Health check
+    // 2. Endpoint de Backup Dedicado
+    if (url.pathname === "/api/backup") {
+      if (request.method === "GET") {
+        const snapshot = generateSystemBackupSnapshot("manual_api_get");
+        return new Response(JSON.stringify(snapshot, null, 2), {
+          status: 200,
+          headers: {
+            "Content-Type": "application/json; charset=utf-8",
+            "Content-Disposition": `attachment; filename="kcl_backup_${new Date().toISOString().split("T")[0]}.json"`,
+            ...CORS_HEADERS,
+            ...SECURITY_HEADERS
+          }
+        });
+      }
+
+      if (request.method === "POST") {
+        try {
+          const payload = await request.json();
+          const id = "backup-manual-" + Date.now();
+          collections.kce_backups.push({ id, value: payload });
+
+          // Se houver Google Drive Webhook
+          const driveWebhook = payload.gdriveWebhook || (env && env.GDRIVE_WEBHOOK_URL);
+          let gdriveStatus = "not_configured";
+          if (driveWebhook) {
+            try {
+              await fetch(driveWebhook, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                  filename: `kcl_backup_${new Date().toISOString().split("T")[0]}.json`,
+                  content: JSON.stringify(payload, null, 2),
+                  timestamp: new Date().toISOString()
+                })
+              });
+              gdriveStatus = "sent";
+            } catch(e) {
+              gdriveStatus = "error: " + e.message;
+            }
+          }
+
+          return new Response(JSON.stringify({ success: true, id, gdriveStatus }), {
+            status: 200,
+            headers: { "Content-Type": "application/json", ...CORS_HEADERS, ...SECURITY_HEADERS }
+          });
+        } catch(err) {
+          return new Response(JSON.stringify({ error: err.message }), {
+            status: 500,
+            headers: { "Content-Type": "application/json", ...CORS_HEADERS, ...SECURITY_HEADERS }
+          });
+        }
+      }
+    }
+
+    // 3. Health check
     if (url.pathname === "/api/health") {
       return new Response(JSON.stringify({
         status: "online",
@@ -122,14 +225,15 @@ export default {
         location: "Montes Claros - MG",
         pwa: true,
         lgpd: true,
-        version: "2026.11.12-instant-v3",
+        backupMidnightCron: "0 3 * * * (00:00 Horário de Brasília)",
+        version: "2026.11.16-auto-backup-v1",
         timestamp: new Date().toISOString()
       }, null, 2), {
         headers: { "Content-Type": "application/json", ...CORS_HEADERS, ...SECURITY_HEADERS }
       });
     }
 
-    // 3. Servir assets estáticos compilados em dist/ (SPA + PWA)
+    // 4. Servir assets estáticos compilados em dist/ (SPA + PWA)
     if (env.ASSETS) {
       try {
         const assetResponse = await env.ASSETS.fetch(request);
