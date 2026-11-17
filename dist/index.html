@@ -5,7 +5,7 @@
 <script>
   // ATUALIZAÇÃO FORÇADA DE CACHE & SERVICE WORKER
   (function(){
-    var CURRENT_BUILD = 'kcl-build-20261116-v525-final-master';
+    var CURRENT_BUILD = 'kcl-build-20261116-v530-buttons-and-seguranca';
     try {
       if ('caches' in window) {
         caches.keys().then(function(keys){
@@ -7268,6 +7268,23 @@ input[aria-label*="Comparar"] {
   }
 }
 
+
+/* CORREÇÃO DEFINITIVA DE SEGURANÇA E BOTÕES DE LOCALIZAÇÃO */
+#localizacao-main-grid > div:first-child p,
+#localizacao-main-grid > div:first-child span,
+#localizacao-main-grid > div:first-child a {
+  text-align: left !important;
+  text-justify: auto !important;
+  white-space: normal !important;
+  word-break: normal !important;
+  overflow-wrap: break-word !important;
+}
+.kcl-seguranca-line {
+  white-space: normal !important;
+  display: inline !important;
+  font-size: inherit !important;
+}
+
 </style>
 
 <style id="kcl-final-v502">
@@ -8889,10 +8906,14 @@ H.useEffect(()=>{if(!V)return;(async()=>{try{let u=await w("records.list",{colle
               l("p",{className:"text-[14px] sm:text-[16px] text-[#C8D0DA] leading-relaxed flex flex-nowrap items-baseline gap-1.5 whitespace-nowrap",children:[r("span",{className:"text-[#2F9BFF] font-bold shrink-0",children:"📸 Instagram:"}),r("a",{href:"https://instagram.com/kclesteticaautomotiva",target:"_blank",rel:"noopener noreferrer",className:"text-[12.5px] sm:text-[15.5px] text-[#2F9BFF] hover:underline font-semibold whitespace-nowrap",children:"@kclesteticaautomotiva"})]}),
               l("p",{className:"text-[15px] sm:text-[17px] text-[#C8D0DA] leading-relaxed",children:[r("span",{className:"text-emerald-400 font-bold",children:"💬 WhatsApp: "}),r("a",{href:"https://wa.me/553898122276?text=Ol%C3%A1%20KCL%20Est%C3%A9tica%20Automotiva!%20Gostaria%20de%20agendar%20um%20hor%C3%A1rio.",target:"_blank",rel:"noopener noreferrer",className:"text-emerald-400 hover:underline font-semibold whitespace-nowrap",children:"(38) 9812-2276"})]}),
               l("p",{className:"text-[15px] sm:text-[17px] text-[#C8D0DA] leading-relaxed",children:[r("span",{className:"text-[#2F9BFF] font-bold",children:"☕ Comodidade: "}),"Wi-Fi de alta velocidade e café fresquinho para nossos clientes."]}),
-              l("p",{className:"text-[14.5px] sm:text-[16px] text-[#C8D0DA] leading-relaxed",children:[r("span",{className:"text-[#2F9BFF] font-bold",children:"🛡️ Segurança: "}),r("span",{className:"kcl-seguranca-line",children:"Pátio fechado com monitoramento por câmeras de segurança 24 horas."})]})
+              l("p",{className:"text-[14.5px] sm:text-[16px] text-[#C8D0DA] leading-relaxed text-left",style:{textAlign:"left",textJustify:"auto"},children:[r("span",{className:"text-[#2F9BFF] font-bold",children:"🛡️ Segurança: "}),r("span",{className:"text-[#C8D0DA]",children:"Pátio fechado com monitoramento por câmeras de segurança 24 horas."})]})
             ]})
           ]}),
-
+          l("div",{className:"mt-6 pt-3 grid grid-cols-1 sm:grid-cols-3 gap-2.5 w-full min-w-0",children:[
+            r("a",{href:"https://www.google.com/maps/search/?api=1&query=Rua+Belo+Horizonte+80+Sao+Jose+Montes+Claros+MG",target:"_blank",rel:"noopener noreferrer",className:"btn-teal pill py-3.5 px-3 text-center font-bold text-xs tracking-wider uppercase block shadow-lg shadow-[#0066FF]/30 w-full",children:"GOOGLE MAPS"}),
+            r("a",{href:"https://waze.com/ul?q=Rua+Belo+Horizonte+80+Montes+Claros+MG&navigate=yes",target:"_blank",rel:"noopener noreferrer",className:"btn-line pill py-3.5 px-3 text-center font-bold text-xs tracking-wider uppercase block hover:border-[#2F9BFF] w-full",children:"ABRIR NO WAZE"}),
+            r("a",{href:"https://wa.me/553898122276?text=Ol%C3%A1%20KCL%20Est%C3%A9tica%20Automotiva!%20Gostaria%20de%20agendar%20um%20hor%C3%A1rio.",target:"_blank",rel:"noopener noreferrer",className:"pill py-3.5 px-3 text-center font-bold text-xs tracking-wider uppercase block bg-emerald-600 hover:bg-emerald-500 text-white shadow-lg shadow-emerald-600/30 w-full",children:"💬 WHATSAPP"})
+          ]})
         ]}),
         l("div",{className:"card-round border border-[var(--line)] bg-[#050B1A] overflow-hidden min-h-[340px] sm:min-h-[480px] h-full w-full min-w-0 relative shadow-lg rounded-[24px] flex flex-col",children:[
           r("iframe",{title:"Mapa KCL Estética Automotiva - Rua Belo Horizonte 80",src:"https://maps.google.com/maps?q=Rua+Belo+Horizonte+80,+Sao+Jose,+Montes+Claros+-+MG&t=&z=16&ie=UTF8&iwloc=&output=embed",width:"100%",height:"100%",style:{border:0,minHeight:"320px",height:"100%",width:"100%",flex:"1 1 auto",display:"block",filter:"contrast(1.05) invert(0.9) hue-rotate(180deg)"},loading:"lazy",referrerPolicy:"no-referrer-when-downgrade"}),
