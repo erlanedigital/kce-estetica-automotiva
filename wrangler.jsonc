@@ -9,6 +9,13 @@
   "triggers": {
     "crons": ["0 3 * * *"]
   },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "kcl-estetica-db",
+      "database_id": "0f3a8d77-77c6-4dff-8528-bffd318db41c"
+    }
+  ],
   "assets": {
     "directory": "./dist",
     "binding": "ASSETS",
